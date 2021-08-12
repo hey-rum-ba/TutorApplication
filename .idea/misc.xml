@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/IDM/Compressed/AskAQuestion/app/src/main/res/drawable-anydpi-v24/ic_stat_name.xml" value="0.15" />
+        <entry key="..\:/IDM/Compressed/AskAQuestion/app/src/main/res/drawable/ic_menu_camera.xml" value="0.15" />
+        <entry key="..\:/IDM/Compressed/AskAQuestion/app/src/main/res/drawable/ic_menu_gallery.xml" value="0.15" />
+        <entry key="..\:/IDM/Compressed/AskAQuestion/app/src/main/res/drawable/ic_menu_slideshow.xml" value="0.21944444444444444" />
+        <entry key="..\:/IDM/Compressed/AskAQuestion/app/src/main/res/drawable/side_nav_bar.xml" value="0.15" />
+        <entry key="..\:/IDM/Compressed/AskAQuestion/app/src/main/res/layout-w1240dp/activity_login.xml" value="0.1" />
+        <entry key="..\:/IDM/Compressed/AskAQuestion/app/src/main/res/layout-w936dp/activity_images.xml" value="0.101171875" />
+        <entry key="..\:/IDM/Compressed/AskAQuestion/app/src/main/res/layout-w936dp/activity_login.xml" value="0.1" />
+        <entry key="..\:/IDM/Compressed/AskAQuestion/app/src/main/res/layout-w936dp/image_item.xml" value="0.101171875" />
+        <entry key="..\:/IDM/Compressed/AskAQuestion/app/src/main/res/layout/activity_images.xml" value="0.13385416666666666" />
+        <entry key="..\:/IDM/Compressed/AskAQuestion/app/src/main/res/layout/activity_login.xml" value="0.2" />
+        <entry key="..\:/IDM/Compressed/AskAQuestion/app/src/main/res/layout/activity_main.xml" value="0.2552083333333333" />
+        <entry key="..\:/IDM/Compressed/AskAQuestion/app/src/main/res/layout/activity_sign_up.xml" value="0.24094202898550723" />
+        <entry key="..\:/IDM/Compressed/AskAQuestion/app/src/main/res/layout/app_bar_main.xml" value="0.2546875" />
+        <entry key="..\:/IDM/Compressed/AskAQuestion/app/src/main/res/layout/content_main.xml" value="0.2552083333333333" />
+        <entry key="..\:/IDM/Compressed/AskAQuestion/app/src/main/res/layout/dialog_single_number_picker.xml" value="0.13489583333333333" />
+        <entry key="..\:/IDM/Compressed/AskAQuestion/app/src/main/res/layout/fragment_gallery.xml" value="0.2546875" />
+        <entry key="..\:/IDM/Compressed/AskAQuestion/app/src/main/res/layout/fragment_home.xml" value="0.2546875" />
+        <entry key="..\:/IDM/Compressed/AskAQuestion/app/src/main/res/layout/fragment_slideshow.xml" value="0.2546875" />
+        <entry key="..\:/IDM/Compressed/AskAQuestion/app/src/main/res/layout/image_item.xml" value="0.13385416666666666" />
+        <entry key="..\:/IDM/Compressed/AskAQuestion/app/src/main/res/layout/imagepicker.xml" value="0.13385416666666666" />
+        <entry key="..\:/IDM/Compressed/AskAQuestion/app/src/main/res/layout/month_year_picker_dialog.xml" value="0.13489583333333333" />
+        <entry key="..\:/IDM/Compressed/AskAQuestion/app/src/main/res/layout/nav_header_main.xml" value="0.259375" />
+        <entry key="..\:/IDM/Compressed/AskAQuestion/app/src/main/res/layout/project.xml" value="0.259375" />
+        <entry key="..\:/IDM/Compressed/AskAQuestion/app/src/main/res/layout/show_solution.xml" value="0.10677083333333333" />
+        <entry key="..\:/IDM/Compressed/AskAQuestion/app/src/main/res/menu/activity_main_drawer.xml" value="0.2546875" />
+        <entry key="..\:/IDM/Compressed/AskAQuestion/app/src/main/res/menu/main.xml" value="0.2546875" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "968913719829",
+    "firebase_url": "https://tutor-application-dbcbb-default-rtdb.firebaseio.com",
+    "project_id": "tutor-application-dbcbb",
+    "storage_bucket": "tutor-application-dbcbb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:968913719829:android:766c192625f985a7f2f41c",
+        "android_client_info": {
+          "package_name": "com.citrine.askaquestion"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "968913719829-hfkc20lpu1lu8siqu64mbnp71a6ga0ud.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbkD3OplYclJLcBiwtFzKX5LBBzZ5rhmQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "968913719829-hfkc20lpu1lu8siqu64mbnp71a6ga0ud.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:968913719829:android:c0fe4404ecd20a71f2f41c",
+        "android_client_info": {
+          "package_name": "com.citrine.tutorapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "968913719829-hfkc20lpu1lu8siqu64mbnp71a6ga0ud.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbkD3OplYclJLcBiwtFzKX5LBBzZ5rhmQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "968913719829-hfkc20lpu1lu8siqu64mbnp71a6ga0ud.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
