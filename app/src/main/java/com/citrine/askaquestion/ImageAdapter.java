@@ -1,6 +1,10 @@
 package com.citrine.askaquestion;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,12 +42,14 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
                 .fit()
                 .centerCrop()
                 .into(holder.imageView);
-        holder.imageView.setOnClickListener(v->{
-            holder.textViewName.setText(uploadCurrent.getName());
-            Picasso.get()
-                    .load(uploadCurrent.getImageUrl())
-                    .placeholder(R.mipmap.ic_launcher)
-                    .into(holder.imageView1);
+        holder.itemView.setOnClickListener(v->{
+            Intent intent= new Intent(mContext,showPreviousQuestion.class);
+            intent.putExtra("image",uploadCurrent.getImageUrl());
+            Log.d(TAG, "upload iamge:"+uploadCurrent.getImageUrl());
+            if(uploadCurrent.getName()==null) {intent.putExtra("Name","No Name");}
+            else {intent.putExtra("Name",uploadCurrent.getName().toString());
+            Log.d(TAG, "upload iamge:"+uploadCurrent.getName());}
+            mContext.startActivity(intent);
         });
     }
 
@@ -54,17 +60,13 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
 
     public class ImageViewHolder extends RecyclerView.ViewHolder {
         public TextView textViewName;
-        public TextView description;
         public ImageView imageView;
-        public ImageView imageView1;
 
         public ImageViewHolder(View itemView) {
             super(itemView);
 
             textViewName = itemView.findViewById(R.id.text_view_name);
             imageView = itemView.findViewById(R.id.image_view_upload);
-            imageView1 = itemView.findViewById(R.id.solutionShow);
-            description = itemView.findViewById(R.id.solutionDescription);
         }
     }
 }

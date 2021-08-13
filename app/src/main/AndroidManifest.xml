@@ -26,6 +26,8 @@
             android:exported="true" />
         <activity android:name=".ImageActivity"
             android:exported="true" />
+        <activity android:name=".showPreviousQuestion"
+            android:exported="true" />
         <activity
             android:name=".ui.login.LoginActivity"
             android:exported="true"
