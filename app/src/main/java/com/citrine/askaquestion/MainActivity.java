@@ -52,13 +52,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         int an=1;
         setSupportActionBar(binding.appBarMain.toolbar);
-        if(an==1){
-            binding.appBarMain.fab.setOnClickListener(view -> Snackbar.make(view, "Answer a new question", Snackbar.LENGTH_LONG)
-            .setAction("Action", null).show());
-        }
-        else{
-            binding.appBarMain.fab.setOnClickListener(view -> Snackbar.make(view, "Ask a new question", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show());}
+
+        binding.appBarMain.fab.setOnClickListener(view -> Snackbar.make(view, "Ask a new question", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show());
+        binding.appBarMain.fab.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                startActivity(new Intent(MainActivity.this, VisitPreviousQuestion.class));
+                return true;
+            }
+        });
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
         // Passing each menu ID as a set of Ids because each
