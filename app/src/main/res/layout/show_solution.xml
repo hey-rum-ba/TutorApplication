@@ -10,6 +10,18 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/Timer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:editable="true"
+        android:ems="10"
+        android:gravity="center_horizontal"
+        android:inputType="time"
+        android:minHeight="48dp"
+        tools:ignore="SpeakableTextPresentCheck" />
+
     <ImageView
         android:id="@+id/solutionShow"
         android:layout_width="match_parent"
@@ -22,6 +34,30 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:gravity="center_horizontal"
+        android:minHeight="48dp"
         android:text="The Description of the question" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="4dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/skip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="6dp"
+            android:layout_weight="1"
+            android:text="Skip" />
+
+        <Button
+            android:id="@+id/solve"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="6dp"
+            android:layout_weight="1"
+            android:text="Solve" />
+    </LinearLayout>
 </LinearLayout>
 </ScrollView>

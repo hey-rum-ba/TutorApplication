@@ -83,16 +83,10 @@ public class HomeFragment extends Fragment {
         });
 
         final TextView textView = binding.textHome;
-        textView.setText("setting something");
-        textView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)
-            {
-                Intent intent = new Intent(getActivity(), VisitPreviousQuestion.class);
-                startActivity(intent);
-
-            }
-
+        textView.setText("Click here to request new question");
+        textView.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), ImageActivity.class);
+            startActivity(intent);
         });
         return root;
 

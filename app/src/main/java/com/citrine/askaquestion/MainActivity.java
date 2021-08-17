@@ -50,15 +50,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        int an=1;
         setSupportActionBar(binding.appBarMain.toolbar);
 
-        binding.appBarMain.fab.setOnClickListener(view -> Snackbar.make(view, "Ask a new question", Snackbar.LENGTH_LONG)
+        binding.appBarMain.fab.setOnClickListener(view -> Snackbar.make(view, "Hold for answering a new question", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show());
         binding.appBarMain.fab.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                startActivity(new Intent(MainActivity.this, VisitPreviousQuestion.class));
+                startActivity(new Intent(MainActivity.this, ImageActivity.class));
                 return true;
             }
         });
