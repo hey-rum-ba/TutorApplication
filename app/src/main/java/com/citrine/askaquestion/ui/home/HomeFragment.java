@@ -85,7 +85,7 @@ public class HomeFragment extends Fragment {
         final TextView textView = binding.textHome;
         textView.setText("Click here to request new question");
         textView.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), ImageActivity.class);
+            Intent intent = new Intent(getActivity(), VisitPreviousQuestion.class);
             startActivity(intent);
         });
         return root;

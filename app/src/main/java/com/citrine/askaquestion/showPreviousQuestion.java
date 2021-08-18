@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -38,9 +39,6 @@ public class showPreviousQuestion extends AppCompatActivity {
         skip =findViewById(R.id.skip);
         String name= getIntent().getStringExtra("Name");
         String imageUrl=getIntent().getStringExtra("image");
-        Log.d(TAG, "We are here");
-        Log.d(TAG, "upload name:"+name);
-        Log.d(TAG, "upload name:"+imageUrl);
         textView.setText(name);
         //here you can have your logic to set text to edittext
         countDownTimer = new CountDownTimer(600000, 1000) {
@@ -68,6 +66,7 @@ public class showPreviousQuestion extends AppCompatActivity {
                 long seconds=(millisUntilFinished %60000)/1000;
                 mTextField.setText("Time remaining: " + minutes+ " minutes and " +seconds+"seconds");
                 mTextField.setOnClickListener(null);
+                Toast.makeText(showPreviousQuestion.this, "Your 1hr time starts now", Toast.LENGTH_SHORT).show();
                 //here you can have your logic to set text to edittext
             }
             public void onFinish() {

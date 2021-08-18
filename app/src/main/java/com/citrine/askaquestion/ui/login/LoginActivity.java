@@ -24,6 +24,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.citrine.askaquestion.MainActivity;
 import com.citrine.askaquestion.R;
 import com.citrine.askaquestion.SignUpActivity;
 import com.citrine.askaquestion.UploadToFireBase;
@@ -47,6 +48,7 @@ public class LoginActivity extends AppCompatActivity {
     private final FirebaseDatabase firebaseDatabase=FirebaseDatabase.getInstance();
     private FirebaseUser user;
     private FirebaseAuth auth;
+    private String emailAddress;
     DatabaseReference databaseReference=firebaseDatabase.getReference("uploadedUserDetail");
 
     @Override
@@ -125,26 +127,95 @@ public class LoginActivity extends AppCompatActivity {
             loadingProgressBar.setVisibility(View.VISIBLE);
             loginViewModel.login(usernameEditText.getText().toString(),
                     passwordEditText.getText().toString());
+            emailAddress=usernameEditText.getText().toString();
+            databaseReference.orderByChild("email").equalTo(emailAddress).addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                    UploadToFireBase upload= snapshot.getValue(UploadToFireBase.class);
+                    Log.d(TAG, "here is username "+upload.getUsername());
+                    Log.d(TAG, "here is username "+upload.isTeacher());
+                    Intent intent=new Intent(LoginActivity.this, MainActivity.class);
+                    String bool= String.valueOf(upload.isTeacher());
+                    intent.putExtra("bool",bool);
+                    Log.d(TAG, "here is bool: "+bool);
+                    String welcome = getString(R.string.welcome) +upload.getUsername()+"' !!! ";
+                    // TODO : initiate successful logged in experience
+                    Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
+                }
+
+                @Override
+                public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                }
+
+                @Override
+                public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+                }
+
+                @Override
+                public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
            getData();
         });
     }
 
     private void updateUiWithUser(LoggedInUserView model) {
-                String welcome = getString(R.string.welcome) +model.getDisplayName();
+
+        databaseReference.orderByChild("email").equalTo(emailAddress).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                UploadToFireBase upload= snapshot.getValue(UploadToFireBase.class);
+                Log.d(TAG, "here is username "+upload.getUsername());
+                Log.d(TAG, "here is username "+upload.isTeacher());
+                Intent intent=new Intent(LoginActivity.this, MainActivity.class);
+                String bool= String.valueOf(upload.isTeacher());
+                intent.putExtra("bool",bool);
+                Log.d(TAG, "here is bool: "+bool);
+                String welcome = getString(R.string.welcome) +upload.getUsername()+"' !!! ";
                 // TODO : initiate successful logged in experience
                 Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
             }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
 
 
     private void getData() {
         String userid=databaseReference.getKey().toString();
         Log.d(TAG,"user id : "+userid);
-        databaseReference.child(userid).child("username").addChildEventListener(new ChildEventListener() {
-       // databaseReference.orderByChild("username").addChildEventListener(new ChildEventListener() {
+        //databaseReference.child("uploadedUserDetail").addChildEventListener(new ChildEventListener() {
+        databaseReference.orderByChild("email").equalTo(emailAddress).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 UploadToFireBase upload= snapshot.getValue(UploadToFireBase.class);
-                Log.d(TAG, "here is username "+upload.username);
+                Log.d(TAG, "here is username "+upload.getUsername());
             }
 
             @Override

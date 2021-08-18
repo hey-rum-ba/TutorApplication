@@ -1,5 +1,7 @@
 package com.citrine.askaquestion;
 
+import static android.content.ContentValues.TAG;
+
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,11 +22,17 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -43,6 +51,9 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private TextView mPreview;
     private SlideshowViewModel slideshowViewModel;
+    private FirebaseAuth auth;
+    private FirebaseUser user;
+    private FirebaseDatabase database;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -50,6 +61,12 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setSupportActionBar(binding.appBarMain.toolbar);
+
+        auth=FirebaseAuth.getInstance();
+        user= auth.getCurrentUser();
+        database=FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference=database.getReference("uploadedUserDetail");
+
 
         binding.appBarMain.fab.setOnClickListener(view -> Snackbar.make(view, "Hold for answering a new question", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show());
@@ -72,9 +89,9 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
         Intent intent=getIntent();
-       boolean isTeacher=intent.getBooleanExtra("teacher",false);
+        String isTeacher=intent.getStringExtra("bool");
         Log.d(TAG, "isTeacher success:"+isTeacher);
-        if(isTeacher){
+        if(isTeacher==" true"){
         Toast.makeText(MainActivity.this, "This is a teacher account", Toast.LENGTH_SHORT).show();}
         else{
             Toast.makeText(MainActivity.this, "This is a student account", Toast.LENGTH_SHORT).show();
