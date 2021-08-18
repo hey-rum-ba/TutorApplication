@@ -43,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private TextView mPreview;
     private SlideshowViewModel slideshowViewModel;
-    private boolean b;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -72,6 +71,14 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+        Intent intent=getIntent();
+       boolean isTeacher=intent.getBooleanExtra("teacher",false);
+        Log.d(TAG, "isTeacher success:"+isTeacher);
+        if(isTeacher){
+        Toast.makeText(MainActivity.this, "This is a teacher account", Toast.LENGTH_SHORT).show();}
+        else{
+            Toast.makeText(MainActivity.this, "This is a student account", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

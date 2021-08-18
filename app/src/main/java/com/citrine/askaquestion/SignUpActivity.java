@@ -62,7 +62,6 @@ public class SignUpActivity extends AppCompatActivity {
             mDatabaseRef = FirebaseDatabase.getInstance().getReference("uploadedUserDetail");
             b=false;
 
-
         checkingBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             b=true; System.out.println("Checked");
         });
@@ -80,6 +79,8 @@ public class SignUpActivity extends AppCompatActivity {
                 } else {
                     registerUser(txtUsername , txtEmail , txtPassword);
                     uploadFile(txtUsername,txtEmail,txtPassword,b);
+                    Intent intent =new Intent(SignUpActivity.this,MainActivity.class);
+                    intent.putExtra("teacher",b);
                     if(user != null){
                     user.sendEmailVerification()
                             .addOnCompleteListener(task -> {
@@ -91,6 +92,7 @@ public class SignUpActivity extends AppCompatActivity {
                             });
                 }}
             finish();
+
             });
         }
 
