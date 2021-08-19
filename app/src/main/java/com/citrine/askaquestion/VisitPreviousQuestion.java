@@ -1,10 +1,13 @@
 package com.citrine.askaquestion;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,14 +16,19 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
+import com.google.protobuf.StringValue;
 import com.squareup.picasso.Picasso;
 
 public class VisitPreviousQuestion extends AppCompatActivity {
@@ -33,7 +41,7 @@ public class VisitPreviousQuestion extends AppCompatActivity {
     private EditText mEditTextFileName;
     private ImageView mImageView;
     private ProgressBar mProgressBar;
-
+    private String emailAddress;
     private Uri mImageUri;
 
     private StorageReference mStorageRef;
@@ -58,6 +66,12 @@ public class VisitPreviousQuestion extends AppCompatActivity {
 
         mButtonChooseImage.setOnClickListener(v -> openFileChooser());
 
+        emailAddress=getIntent().getStringExtra("emailAddress");
+        Log.d(TAG, "email ye he"+emailAddress);
+        String s= mDatabaseRef.orderByChild("email").equalTo(emailAddress).toString();
+        Log.d(TAG, "uploadFile: "+s);
+//        boolean intent =getIntent().getBooleanExtra("teacher",false);
+//        Log.d(TAG, "teacher he: "+ intent);
         mButtonUpload.setOnClickListener(v -> {
             if (mUploadTask != null && mUploadTask.isInProgress()) {
                 Toast.makeText(VisitPreviousQuestion.this, "Upload in progress", Toast.LENGTH_SHORT).show();
@@ -105,7 +119,7 @@ public class VisitPreviousQuestion extends AppCompatActivity {
                         Task<Uri> urlTask = taskSnapshot.getStorage().getDownloadUrl();
                         while (!urlTask.isSuccessful());
                         Uri downloadUrl = urlTask.getResult();
-                        //Log.d(TAG, "onSuccess: firebase download url: " + downloadUrl.toString()); //use if testing...don't need this line.
+                        //mDatabaseRef = FirebaseDatabase.getInstance().getReference("uploadedUserDetail");
                         Upload upload = new Upload(mEditTextFileName.getText().toString().trim(),downloadUrl.toString());
                         String uploadId = mDatabaseRef.push().getKey();
                         mDatabaseRef.child(uploadId).setValue(upload);

@@ -1,6 +1,9 @@
 package com.citrine.askaquestion;
 
+import static android.content.ContentValues.TAG;
+
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -24,6 +27,7 @@ public class ImageActivity extends AppCompatActivity {
     private ProgressBar mProgressCircle;
     private DatabaseReference mDatabaseRef;
     private List<Upload> mUploads;
+    private String emailAddress;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,8 +37,11 @@ public class ImageActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mProgressCircle = findViewById(R.id.progress_circle);
         mUploads = new ArrayList<>();
+
+
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("uploads for students");
-        mDatabaseRef.addValueEventListener(new ValueEventListener() {
+//
+       mDatabaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {

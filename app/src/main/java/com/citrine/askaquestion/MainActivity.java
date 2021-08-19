@@ -100,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
                     UploadToFireBase upload = snapshot.getValue(UploadToFireBase.class);
                     Log.d(TAG, "here is username " + upload.getUsername());
                     Log.d(TAG, "here is username lol" + upload.isTeacher());
+
                     if (upload.isTeacher()) {
                         Toast.makeText(MainActivity.this, "This is a teacher account", Toast.LENGTH_SHORT).show();
                     } else {

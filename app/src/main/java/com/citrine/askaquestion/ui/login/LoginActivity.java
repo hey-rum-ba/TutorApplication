@@ -24,10 +24,12 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.citrine.askaquestion.ImageActivity;
 import com.citrine.askaquestion.MainActivity;
 import com.citrine.askaquestion.R;
 import com.citrine.askaquestion.SignUpActivity;
 import com.citrine.askaquestion.UploadToFireBase;
+import com.citrine.askaquestion.VisitPreviousQuestion;
 import com.citrine.askaquestion.databinding.ActivityLoginBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -129,7 +131,9 @@ public class LoginActivity extends AppCompatActivity {
                     passwordEditText.getText().toString());
             emailAddress=usernameEditText.getText().toString();
             Intent intent=new Intent(LoginActivity.this, MainActivity.class);
+            Intent intent1=new Intent(LoginActivity.this, VisitPreviousQuestion.class);
             intent.putExtra("emailAddress",emailAddress);
+            intent1.putExtra("emailAddress",emailAddress);
             Log.d(TAG, "sending email " +emailAddress);
             startActivity(intent);
             databaseReference.orderByChild("email").equalTo(emailAddress).addChildEventListener(new ChildEventListener() {
