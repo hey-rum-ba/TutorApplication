@@ -67,16 +67,6 @@ public class MainActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = database.getReference("uploadedUserDetail");
 
-
-        binding.appBarMain.fab.setOnClickListener(view -> Snackbar.make(view, "Hold for answering a new question", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show());
-        binding.appBarMain.fab.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                startActivity(new Intent(MainActivity.this, ImageActivity.class));
-                return true;
-            }
-        });
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
         // Passing each menu ID as a set of Ids because each
@@ -103,8 +93,20 @@ public class MainActivity extends AppCompatActivity {
 
                     if (upload.isTeacher()) {
                         Toast.makeText(MainActivity.this, "This is a teacher account", Toast.LENGTH_SHORT).show();
+                        binding.appBarMain.fab.setOnClickListener(view -> Snackbar.make(view, "Hold for answering a new question", Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show());
+                        binding.appBarMain.fab.setOnLongClickListener(v -> {
+                            startActivity(new Intent(MainActivity.this, ImageActivity.class));
+                            return true;
+                        });
                     } else {
                         Toast.makeText(MainActivity.this, "This is a student account", Toast.LENGTH_SHORT).show();
+                        binding.appBarMain.fab.setOnClickListener(view -> Snackbar.make(view, "Hold for asking a new question", Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show());
+                        binding.appBarMain.fab.setOnLongClickListener(v -> {
+                            startActivity(new Intent(MainActivity.this, VisitPreviousQuestion.class));
+                            return true;
+                        });
                     }
                 }
 

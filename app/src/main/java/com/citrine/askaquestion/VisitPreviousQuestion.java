@@ -63,10 +63,11 @@ public class VisitPreviousQuestion extends AppCompatActivity {
 
         mStorageRef = FirebaseStorage.getInstance().getReference("uploads for student");
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("uploads for students");
+//        mDatabaseRef = FirebaseDatabase.getInstance().getReference("uploadedUserDetail");
 
         mButtonChooseImage.setOnClickListener(v -> openFileChooser());
 
-        emailAddress=getIntent().getStringExtra("emailAddress");
+        emailAddress=getIntent().getStringExtra("emailAdd");
         Log.d(TAG, "email ye he"+emailAddress);
         String s= mDatabaseRef.orderByChild("email").equalTo(emailAddress).toString();
         Log.d(TAG, "uploadFile: "+s);
@@ -121,6 +122,7 @@ public class VisitPreviousQuestion extends AppCompatActivity {
                         Uri downloadUrl = urlTask.getResult();
                         //mDatabaseRef = FirebaseDatabase.getInstance().getReference("uploadedUserDetail");
                         Upload upload = new Upload(mEditTextFileName.getText().toString().trim(),downloadUrl.toString());
+//                        String uploadId = mDatabaseRef.push().getKey();
                         String uploadId = mDatabaseRef.push().getKey();
                         mDatabaseRef.child(uploadId).setValue(upload);
                     })

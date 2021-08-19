@@ -93,8 +93,10 @@ public class HomeFragment extends Fragment {
         textView.setText("Click here to request new question");
         textView.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), VisitPreviousQuestion.class);
+            emailAddress = getActivity().getIntent().getStringExtra("emailAddress");
+            Log.d(TAG, "here is email in homefrag" + emailAddress);
+            intent.putExtra("emailAdd",emailAddress);
             startActivity(intent);
-            intent.putExtra("emailAddress",emailAddress);
         });
         return root;
 
