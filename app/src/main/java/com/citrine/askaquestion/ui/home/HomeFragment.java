@@ -48,6 +48,7 @@ public class HomeFragment extends Fragment {
     private ImageAdapter mAdapter;
     private ProgressBar mProgressCircle;
     private DatabaseReference mDatabaseRef;
+    private DatabaseReference mDatabaseRef1;
     private List<Upload> mUploads;
     public HomeFragment() {
 
@@ -69,24 +70,39 @@ public class HomeFragment extends Fragment {
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mUploads = new ArrayList<>();
-        mDatabaseRef = FirebaseDatabase.getInstance().getReference("uploads");
-        mDatabaseRef.addValueEventListener(new ValueEventListener() {
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference("uploadedUserDetails");
+        mDatabaseRef1 = FirebaseDatabase.getInstance().getReference("uploads for students");
+        emailAddress = getActivity().getIntent().getStringExtra("emailAddress");
+        if(emailAddress!=null)
+        {mDatabaseRef.orderByChild("email").equalTo(emailAddress).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    Upload upload = postSnapshot.getValue(Upload.class);
-                    mUploads.add(upload);
-                }
+                mDatabaseRef1.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                            Upload upload = postSnapshot.getValue(Upload.class);
+                            mUploads.add(upload);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
                 mAdapter = new ImageAdapter(getActivity(), mUploads);
                 mRecyclerView.setAdapter(mAdapter);
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Toast.makeText(getActivity(), databaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
 
-        emailAddress = getActivity().getIntent().getStringExtra("emailAddress");
         Log.d(TAG, "here is email in homefrag" + emailAddress);
 
         final TextView textView = binding.textHome;

@@ -42,6 +42,7 @@ public class VisitPreviousQuestion extends AppCompatActivity {
     private ImageView mImageView;
     private ProgressBar mProgressBar;
     private String emailAddress;
+    private int n;
     private Uri mImageUri;
 
     private StorageReference mStorageRef;
@@ -53,7 +54,7 @@ public class VisitPreviousQuestion extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.imagepicker);
-
+        n=getIntent().getIntExtra("setting",0);
         mButtonChooseImage = findViewById(R.id.button_choose_image);
         mButtonUpload = findViewById(R.id.button_upload);
         mTextViewShowUploads = findViewById(R.id.text_view_show_uploads);
@@ -80,8 +81,9 @@ public class VisitPreviousQuestion extends AppCompatActivity {
                 uploadFile();
             }
         });
+        if(n==1){mTextViewShowUploads.setEnabled(false);}
+        else mTextViewShowUploads.setOnClickListener(v -> openImagesActivity());
 
-        mTextViewShowUploads.setOnClickListener(v -> openImagesActivity());
     }
 
     private void openFileChooser() {

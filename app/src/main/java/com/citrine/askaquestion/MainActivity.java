@@ -104,7 +104,9 @@ public class MainActivity extends AppCompatActivity {
                         binding.appBarMain.fab.setOnClickListener(view -> Snackbar.make(view, "Hold for asking a new question", Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show());
                         binding.appBarMain.fab.setOnLongClickListener(v -> {
-                            startActivity(new Intent(MainActivity.this, VisitPreviousQuestion.class));
+                            Intent intent1=new Intent(MainActivity.this, VisitPreviousQuestion.class);
+                            intent1.putExtra("setting",1);
+                            startActivity(intent1);
                             return true;
                         });
                     }
