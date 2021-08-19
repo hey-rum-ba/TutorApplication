@@ -59,14 +59,16 @@ public class showPreviousQuestion extends AppCompatActivity {
         };
         countDownTimer.start();
         solve.setOnClickListener(v ->
+
         {countDownTimer.cancel();
+            Toast.makeText(showPreviousQuestion.this, "Your 1hr time starts now", Toast.LENGTH_SHORT).show();
         new CountDownTimer(3600000, 1000) {
             public void onTick(long millisUntilFinished) {
                 long minutes= millisUntilFinished/60000;
                 long seconds=(millisUntilFinished %60000)/1000;
                 mTextField.setText("Time remaining: " + minutes+ " minutes and " +seconds+"seconds");
                 mTextField.setOnClickListener(null);
-                Toast.makeText(showPreviousQuestion.this, "Your 1hr time starts now", Toast.LENGTH_SHORT).show();
+
                 //here you can have your logic to set text to edittext
             }
             public void onFinish() {
@@ -74,7 +76,8 @@ public class showPreviousQuestion extends AppCompatActivity {
                 mTextField.setOnClickListener(null);
                 solve.setEnabled(false);
             }
-    }.start();});
+    }.start();
+            });
         Picasso.get()
                 .load(imageUrl)
                 .resize(1500, 2200)

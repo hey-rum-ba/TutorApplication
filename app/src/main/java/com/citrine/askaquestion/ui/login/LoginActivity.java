@@ -128,16 +128,19 @@ public class LoginActivity extends AppCompatActivity {
             loginViewModel.login(usernameEditText.getText().toString(),
                     passwordEditText.getText().toString());
             emailAddress=usernameEditText.getText().toString();
+            Intent intent=new Intent(LoginActivity.this, MainActivity.class);
+            intent.putExtra("emailAddress",emailAddress);
+            Log.d(TAG, "sending email " +emailAddress);
+            startActivity(intent);
             databaseReference.orderByChild("email").equalTo(emailAddress).addChildEventListener(new ChildEventListener() {
                 @Override
                 public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                     UploadToFireBase upload= snapshot.getValue(UploadToFireBase.class);
-                    Log.d(TAG, "here is username "+upload.getUsername());
-                    Log.d(TAG, "here is username "+upload.isTeacher());
-                    Intent intent=new Intent(LoginActivity.this, MainActivity.class);
-                    String bool= String.valueOf(upload.isTeacher());
-                    intent.putExtra("bool",bool);
-                    Log.d(TAG, "here is bool: "+bool);
+//                    Log.d(TAG, "here is username "+upload.getEmail());
+//                    Log.d(TAG, "here is username "+upload.isTeacher());
+//                    Intent intent=new Intent(LoginActivity.this, MainActivity.class);
+//                    intent.putExtra("emailAddress",emailAddress);
+//                    Log.d(TAG, "here is bool: "+bool);
                     String welcome = getString(R.string.welcome) +upload.getUsername()+"' !!! ";
                     // TODO : initiate successful logged in experience
                     Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
@@ -173,12 +176,12 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 UploadToFireBase upload= snapshot.getValue(UploadToFireBase.class);
-                Log.d(TAG, "here is username "+upload.getUsername());
-                Log.d(TAG, "here is username "+upload.isTeacher());
+//                Log.d(TAG, "here is username "+upload.getUsername());
+//                Log.d(TAG, "here is username "+upload.isTeacher());
                 Intent intent=new Intent(LoginActivity.this, MainActivity.class);
                 String bool= String.valueOf(upload.isTeacher());
                 intent.putExtra("bool",bool);
-                Log.d(TAG, "here is bool: "+bool);
+//                Log.d(TAG, "here is bool: "+bool);
                 String welcome = getString(R.string.welcome) +upload.getUsername()+"' !!! ";
                 // TODO : initiate successful logged in experience
                 Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
@@ -215,7 +218,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 UploadToFireBase upload= snapshot.getValue(UploadToFireBase.class);
-                Log.d(TAG, "here is username "+upload.getUsername());
+                //Log.d(TAG, "here is username "+upload.getUsername());
             }
 
             @Override

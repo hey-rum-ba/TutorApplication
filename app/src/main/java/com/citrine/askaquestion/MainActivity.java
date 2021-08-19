@@ -62,10 +62,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         setSupportActionBar(binding.appBarMain.toolbar);
 
-        auth=FirebaseAuth.getInstance();
-        user= auth.getCurrentUser();
-        database=FirebaseDatabase.getInstance();
-        DatabaseReference databaseReference=database.getReference("uploadedUserDetail");
+        auth = FirebaseAuth.getInstance();
+        user = auth.getCurrentUser();
+        database = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = database.getReference("uploadedUserDetail");
 
 
         binding.appBarMain.fab.setOnClickListener(view -> Snackbar.make(view, "Hold for answering a new question", Snackbar.LENGTH_LONG)
@@ -88,15 +88,52 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-        Intent intent=getIntent();
-        String isTeacher=intent.getStringExtra("bool");
-        Log.d(TAG, "isTeacher success:"+isTeacher);
-        if(isTeacher==" true"){
-        Toast.makeText(MainActivity.this, "This is a teacher account", Toast.LENGTH_SHORT).show();}
-        else{
-            Toast.makeText(MainActivity.this, "This is a student account", Toast.LENGTH_SHORT).show();
+        try{
+        Intent intent = getIntent();
+        String emailAddress = intent.getStringExtra("emailAddress");
+        Log.d(TAG, "here is email " + emailAddress);
+        if (emailAddress != null)
+        {
+            databaseReference.orderByChild("email").equalTo(emailAddress).addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                    UploadToFireBase upload = snapshot.getValue(UploadToFireBase.class);
+                    Log.d(TAG, "here is username " + upload.getUsername());
+                    Log.d(TAG, "here is username lol" + upload.isTeacher());
+                    if (upload.isTeacher()) {
+                        Toast.makeText(MainActivity.this, "This is a teacher account", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(MainActivity.this, "This is a student account", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                }
+
+                @Override
+                public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+                }
+
+                @Override
+                public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
+       else Toast.makeText(this, "Please Login to Access", Toast.LENGTH_SHORT).show();} catch (Exception e) {
+            e.printStackTrace();
         }
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
