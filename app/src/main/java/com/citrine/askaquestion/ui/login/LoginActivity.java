@@ -24,12 +24,11 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.citrine.askaquestion.ImageActivity;
 import com.citrine.askaquestion.MainActivity;
 import com.citrine.askaquestion.R;
 import com.citrine.askaquestion.SignUpActivity;
 import com.citrine.askaquestion.UploadToFireBase;
-import com.citrine.askaquestion.VisitPreviousQuestion;
+import com.citrine.askaquestion.uploadImage;
 import com.citrine.askaquestion.databinding.ActivityLoginBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -38,12 +37,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity {
     private LoginViewModel loginViewModel;
@@ -131,7 +124,7 @@ public class LoginActivity extends AppCompatActivity {
                     passwordEditText.getText().toString());
             emailAddress=usernameEditText.getText().toString();
             Intent intent=new Intent(LoginActivity.this, MainActivity.class);
-            Intent intent1=new Intent(LoginActivity.this, VisitPreviousQuestion.class);
+            Intent intent1=new Intent(LoginActivity.this, uploadImage.class);
             intent.putExtra("emailAddress",emailAddress);
             intent1.putExtra("emailAddress",emailAddress);
             Log.d(TAG, "sending email " +emailAddress);

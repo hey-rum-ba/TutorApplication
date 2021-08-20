@@ -4,6 +4,7 @@ import static android.content.ContentValues.TAG;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,13 +43,26 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
                 .fit()
                 .centerCrop()
                 .into(holder.imageView);
+        if(uploadCurrent.getName1()==null)holder.itemView.setBackgroundColor(Color.parseColor("#FFBB86FC"));
+        else holder.itemView.setBackgroundColor(Color.parseColor("#FF018786"));
         holder.itemView.setOnClickListener(v->{
-            Intent intent= new Intent(mContext,showPreviousQuestion.class);
+
+            Intent intent;
+            if(uploadCurrent.getName1()!=null){
+            intent = new Intent(mContext, completeSolution.class);
             intent.putExtra("image",uploadCurrent.getImageUrl());
-            Log.d(TAG, "upload iamge:"+uploadCurrent.getImageUrl());
+            intent.putExtra("image1",uploadCurrent.getImageUrl1());
+            intent.putExtra("Name1",uploadCurrent.getName1());
+            }
+        else {
+                intent = new Intent(mContext, showPreviousQuestion.class);
+                intent.putExtra("image", uploadCurrent.getImageUrl());
+                intent.putExtra("Name1","Question is not solved yet");
+            }
             if(uploadCurrent.getName()==null) {intent.putExtra("Name","No Name");}
-            else {intent.putExtra("Name",uploadCurrent.getName().toString());
-            Log.d(TAG, "upload iamge:"+uploadCurrent.getName());}
+            else {
+                    intent.putExtra("Name",uploadCurrent.getName());
+                }
             mContext.startActivity(intent);
         });
     }

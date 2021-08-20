@@ -1,14 +1,9 @@
 package com.citrine.askaquestion;
 
 
-import static android.service.controls.ControlsProviderService.TAG;
-
 import android.content.Intent;
-import android.net.UrlQuerySanitizer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -27,6 +22,7 @@ public class showPreviousQuestion extends AppCompatActivity {
     private Button solve;
     private Button skip;
     private CountDownTimer countDownTimer;
+    int i=0;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,7 +36,6 @@ public class showPreviousQuestion extends AppCompatActivity {
         String name= getIntent().getStringExtra("Name");
         String imageUrl=getIntent().getStringExtra("image");
         textView.setText(name);
-        //here you can have your logic to set text to edittext
         countDownTimer = new CountDownTimer(600000, 1000) {
 
             public void onTick(long millisUntilFinished) {
@@ -59,8 +54,9 @@ public class showPreviousQuestion extends AppCompatActivity {
         };
         countDownTimer.start();
         solve.setOnClickListener(v ->
-
-        {countDownTimer.cancel();
+        {
+            if(i==0){
+            countDownTimer.cancel();
             Toast.makeText(showPreviousQuestion.this, "Your 1hr time starts now", Toast.LENGTH_SHORT).show();
         new CountDownTimer(3600000, 1000) {
             public void onTick(long millisUntilFinished) {
@@ -76,8 +72,16 @@ public class showPreviousQuestion extends AppCompatActivity {
                 mTextField.setOnClickListener(null);
                 solve.setEnabled(false);
             }
-    }.start();
-            });
+    }.start();i++;}
+            else if(i==1){
+                Intent intent=new Intent(this, uploadImage.class);
+                intent.putExtra("teacherUploading",1);
+                startActivity(intent);
+            }
+
+        }
+
+            );
         Picasso.get()
                 .load(imageUrl)
                 .resize(1500, 2200)
@@ -87,7 +91,5 @@ public class showPreviousQuestion extends AppCompatActivity {
             startActivity(new Intent(showPreviousQuestion.this, ImageActivity.class));
             finish();
         });
-
     }
-
 }

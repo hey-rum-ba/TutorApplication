@@ -1,21 +1,15 @@
 package com.citrine.askaquestion;
 
-import static android.content.ContentValues.TAG;
-
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.Menu;
-import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.citrine.askaquestion.databinding.ActivityMainBinding;
-import com.citrine.askaquestion.databinding.FragmentHomeBinding;
-import com.citrine.askaquestion.databinding.FragmentSlideshowBinding;
 import com.citrine.askaquestion.ui.login.LoginActivity;
 import com.citrine.askaquestion.ui.slideshow.SlideshowViewModel;
 import com.google.android.material.snackbar.Snackbar;
@@ -27,9 +21,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.StorageTask;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -104,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
                         binding.appBarMain.fab.setOnClickListener(view -> Snackbar.make(view, "Hold for asking a new question", Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show());
                         binding.appBarMain.fab.setOnLongClickListener(v -> {
-                            Intent intent1=new Intent(MainActivity.this, VisitPreviousQuestion.class);
+                            Intent intent1=new Intent(MainActivity.this, uploadImage.class);
                             intent1.putExtra("setting",1);
                             startActivity(intent1);
                             return true;

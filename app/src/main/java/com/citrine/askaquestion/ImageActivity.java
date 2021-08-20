@@ -40,7 +40,7 @@ public class ImageActivity extends AppCompatActivity {
 
 
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("uploads for students");
-//
+
        mDatabaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

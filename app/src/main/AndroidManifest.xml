@@ -22,11 +22,13 @@
         <activity
             android:name=".SignUpActivity"
             android:exported="true" />
-        <activity android:name=".VisitPreviousQuestion"
+        <activity android:name=".uploadImage"
             android:exported="true" />
         <activity android:name=".ImageActivity"
             android:exported="true" />
         <activity android:name=".showPreviousQuestion"
+            android:exported="true" />
+        <activity android:name=".completeSolution"
             android:exported="true" />
         <activity
             android:name=".ui.login.LoginActivity"

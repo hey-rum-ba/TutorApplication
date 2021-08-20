@@ -16,22 +16,17 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
-import com.google.protobuf.StringValue;
 import com.squareup.picasso.Picasso;
 
-public class VisitPreviousQuestion extends AppCompatActivity {
+public class uploadImage extends AppCompatActivity {
 
     private static final int PICK_IMAGE_REQUEST = 1;
 
@@ -47,6 +42,7 @@ public class VisitPreviousQuestion extends AppCompatActivity {
 
     private StorageReference mStorageRef;
     private DatabaseReference mDatabaseRef;
+    private DatabaseReference mDatabaseRef1;
 
     private StorageTask mUploadTask;
 
@@ -64,7 +60,7 @@ public class VisitPreviousQuestion extends AppCompatActivity {
 
         mStorageRef = FirebaseStorage.getInstance().getReference("uploads for student");
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("uploads for students");
-//        mDatabaseRef = FirebaseDatabase.getInstance().getReference("uploadedUserDetail");
+        mDatabaseRef1 = FirebaseDatabase.getInstance().getReference("uploaded solution");
 
         mButtonChooseImage.setOnClickListener(v -> openFileChooser());
 
@@ -76,9 +72,10 @@ public class VisitPreviousQuestion extends AppCompatActivity {
 //        Log.d(TAG, "teacher he: "+ intent);
         mButtonUpload.setOnClickListener(v -> {
             if (mUploadTask != null && mUploadTask.isInProgress()) {
-                Toast.makeText(VisitPreviousQuestion.this, "Upload in progress", Toast.LENGTH_SHORT).show();
+                Toast.makeText(uploadImage.this, "Upload in progress", Toast.LENGTH_SHORT).show();
             } else {
                 uploadFile();
+                Toast.makeText(uploadImage.this, "Uploaded", Toast.LENGTH_SHORT).show();
             }
         });
         if(n==1){mTextViewShowUploads.setEnabled(false);}
@@ -113,6 +110,32 @@ public class VisitPreviousQuestion extends AppCompatActivity {
     }
 
     private void uploadFile() {
+        int inte =getIntent().getIntExtra("teacherUploading",0);
+        if(inte==1){
+        if (mImageUri != null) {
+            StorageReference fileReference = mStorageRef.child(System.currentTimeMillis()
+                    + "." + getFileExtension(mImageUri));
+
+            mUploadTask = fileReference.putFile(mImageUri)
+                    .addOnSuccessListener(taskSnapshot -> {
+                        Task<Uri> urlTask = taskSnapshot.getStorage().getDownloadUrl();
+                        while (!urlTask.isSuccessful());
+                        Uri downloadUrl = urlTask.getResult();
+                        Upload upload = new Upload(null,null,mEditTextFileName.getText().toString().trim(),downloadUrl.toString());
+                        String uploadId = mDatabaseRef1.push().getKey();
+                        mDatabaseRef.child(uploadId).setValue(upload);
+                    })
+                    .addOnFailureListener(e -> Toast.makeText(uploadImage.this, e.getMessage(), Toast.LENGTH_SHORT).show())
+                    .addOnProgressListener(taskSnapshot -> {
+                        double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
+                        mProgressBar.setProgress((int) progress);
+                    });
+        } else {
+            Toast.makeText(this, "No file selected", Toast.LENGTH_SHORT).show();
+        }
+    }
+    else
+    {
         if (mImageUri != null) {
             StorageReference fileReference = mStorageRef.child(System.currentTimeMillis()
                     + "." + getFileExtension(mImageUri));
@@ -123,12 +146,12 @@ public class VisitPreviousQuestion extends AppCompatActivity {
                         while (!urlTask.isSuccessful());
                         Uri downloadUrl = urlTask.getResult();
                         //mDatabaseRef = FirebaseDatabase.getInstance().getReference("uploadedUserDetail");
-                        Upload upload = new Upload(mEditTextFileName.getText().toString().trim(),downloadUrl.toString());
+                        Upload upload = new Upload(mEditTextFileName.getText().toString().trim(),downloadUrl.toString(),null,null);
 //                        String uploadId = mDatabaseRef.push().getKey();
                         String uploadId = mDatabaseRef.push().getKey();
                         mDatabaseRef.child(uploadId).setValue(upload);
                     })
-                    .addOnFailureListener(e -> Toast.makeText(VisitPreviousQuestion.this, e.getMessage(), Toast.LENGTH_SHORT).show())
+                    .addOnFailureListener(e -> Toast.makeText(uploadImage.this, e.getMessage(), Toast.LENGTH_SHORT).show())
                     .addOnProgressListener(taskSnapshot -> {
                         double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
                         mProgressBar.setProgress((int) progress);
@@ -136,6 +159,7 @@ public class VisitPreviousQuestion extends AppCompatActivity {
         } else {
             Toast.makeText(this, "No file selected", Toast.LENGTH_SHORT).show();
         }
+    }
     }
 
     private void openImagesActivity() {

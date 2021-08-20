@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.citrine.askaquestion.VisitPreviousQuestion;
+import com.citrine.askaquestion.uploadImage;
 import com.citrine.askaquestion.databinding.FragmentGalleryBinding;
 
 public class GalleryFragment extends Fragment {
@@ -30,7 +30,7 @@ public class GalleryFragment extends Fragment {
         final TextView textView = binding.textGallery;
         galleryViewModel.getText().observe(getViewLifecycleOwner(), s -> textView.setText(s));
         textView.setOnClickListener(v -> {
-            Intent intent = new Intent(requireActivity(), VisitPreviousQuestion.class);
+            Intent intent = new Intent(requireActivity(), uploadImage.class);
             startActivity(intent);
         });
         return root;

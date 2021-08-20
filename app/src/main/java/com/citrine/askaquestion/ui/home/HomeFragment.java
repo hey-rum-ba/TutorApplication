@@ -1,6 +1,5 @@
 package com.citrine.askaquestion.ui.home;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,27 +11,16 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.citrine.askaquestion.ImageActivity;
 import com.citrine.askaquestion.ImageAdapter;
-import com.citrine.askaquestion.MainActivity;
-import com.citrine.askaquestion.R;
 import com.citrine.askaquestion.Upload;
-import com.citrine.askaquestion.VisitPreviousQuestion;
-import com.citrine.askaquestion.databinding.ActivityImagesBinding;
+import com.citrine.askaquestion.uploadImage;
 import com.citrine.askaquestion.databinding.FragmentHomeBinding;
-import com.citrine.askaquestion.databinding.ImageItemBinding;
-import com.citrine.askaquestion.ui.login.LoginActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -108,7 +96,7 @@ public class HomeFragment extends Fragment {
         final TextView textView = binding.textHome;
         textView.setText("Click here to request new question");
         textView.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), VisitPreviousQuestion.class);
+            Intent intent = new Intent(getActivity(), uploadImage.class);
             emailAddress = getActivity().getIntent().getStringExtra("emailAddress");
             Log.d(TAG, "here is email in homefrag" + emailAddress);
             intent.putExtra("emailAdd",emailAddress);
