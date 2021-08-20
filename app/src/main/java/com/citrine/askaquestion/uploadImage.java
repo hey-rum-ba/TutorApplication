@@ -78,8 +78,7 @@ public class uploadImage extends AppCompatActivity {
                 Toast.makeText(uploadImage.this, "Uploaded", Toast.LENGTH_SHORT).show();
             }
         });
-        if(n==1){mTextViewShowUploads.setEnabled(false);}
-        else mTextViewShowUploads.setOnClickListener(v -> openImagesActivity());
+        mTextViewShowUploads.setOnClickListener(v -> openImagesActivity());
 
     }
 
@@ -121,7 +120,12 @@ public class uploadImage extends AppCompatActivity {
                         Task<Uri> urlTask = taskSnapshot.getStorage().getDownloadUrl();
                         while (!urlTask.isSuccessful());
                         Uri downloadUrl = urlTask.getResult();
-                        Upload upload = new Upload(null,null,mEditTextFileName.getText().toString().trim(),downloadUrl.toString());
+                        String url= getIntent().getStringExtra("imageURL");
+                        String name= getIntent().getStringExtra("imageDesc");
+                        Log.d(TAG, "getting url"+url);
+
+
+                        Upload upload = new Upload(name,url,mEditTextFileName.getText().toString().trim(),downloadUrl.toString());
                         String uploadId = mDatabaseRef1.push().getKey();
                         mDatabaseRef.child(uploadId).setValue(upload);
                     })

@@ -24,6 +24,7 @@
             android:layout_gravity="center_horizontal|center_vertical"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
+            android:layout_marginRight="4dp"
             android:layout_marginBottom="8dp"
             android:gravity="center_vertical"
             android:text="Name"

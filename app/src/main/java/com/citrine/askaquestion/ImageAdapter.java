@@ -46,6 +46,11 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
         if(uploadCurrent.getName1()==null)holder.itemView.setBackgroundColor(Color.parseColor("#FFBB86FC"));
         else holder.itemView.setBackgroundColor(Color.parseColor("#FF018786"));
         holder.itemView.setOnClickListener(v->{
+//            Intent intent1= new Intent(mContext,uploadImage.class);
+//            intent1.putExtra("imageURL",uploadCurrent.getImageUrl());
+//            intent1.putExtra("imageDesc",uploadCurrent.getName());
+//            Log.d(TAG, "sending url "+uploadCurrent.getImageUrl());
+
 
             Intent intent;
             if(uploadCurrent.getName1()!=null){

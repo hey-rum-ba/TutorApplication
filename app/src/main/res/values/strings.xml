@@ -32,7 +32,7 @@
     <string name="signIn_as_a_tutor">Signin as A Tutor</string>
     <string name="LogOut">LogOut</string>
     <string name="description">Description</string>
-    <string name="show_previous_solved">Show Previous Solved</string>
+    <string name="show_previous_QNA">Show Previous QNAs</string>
     <string name="upload">Upload</string>
     <string name="choose_file">Choose file</string>
     <string-array name="planets_array">

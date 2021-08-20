@@ -22,6 +22,8 @@ public class showPreviousQuestion extends AppCompatActivity {
     private Button solve;
     private Button skip;
     private CountDownTimer countDownTimer;
+    private String name;
+    private String imageUrl;
     int i=0;
 
     @Override
@@ -76,6 +78,8 @@ public class showPreviousQuestion extends AppCompatActivity {
             else if(i==1){
                 Intent intent=new Intent(this, uploadImage.class);
                 intent.putExtra("teacherUploading",1);
+                intent.putExtra("imageURL",imageUrl);
+                intent.putExtra("imageDesc",name);
                 startActivity(intent);
             }
 
