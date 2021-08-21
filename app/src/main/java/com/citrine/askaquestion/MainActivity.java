@@ -87,7 +87,9 @@ public class MainActivity extends AppCompatActivity {
                         binding.appBarMain.fab.setOnClickListener(view -> Snackbar.make(view, "Hold for answering a new question", Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show());
                         binding.appBarMain.fab.setOnLongClickListener(v -> {
-                            startActivity(new Intent(MainActivity.this, ImageActivity.class));
+                            Intent intent1=new Intent(MainActivity.this, ImageActivity.class);
+                            intent1.putExtra("teacherAccountIsActive",1);
+                            startActivity(intent1);
                             return true;
                         });
                     } else {

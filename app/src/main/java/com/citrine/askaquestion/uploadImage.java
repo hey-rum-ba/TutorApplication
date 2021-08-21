@@ -39,7 +39,7 @@ public class uploadImage extends AppCompatActivity {
     private String emailAddress;
     private int n;
     private Uri mImageUri;
-
+    private int inte;
     private StorageReference mStorageRef;
     private DatabaseReference mDatabaseRef;
     private DatabaseReference mDatabaseRef1;
@@ -48,6 +48,7 @@ public class uploadImage extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "we are here now boi");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.imagepicker);
         n=getIntent().getIntExtra("setting",0);
@@ -61,21 +62,20 @@ public class uploadImage extends AppCompatActivity {
         mStorageRef = FirebaseStorage.getInstance().getReference("uploads for student");
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("uploads for students");
         mDatabaseRef1 = FirebaseDatabase.getInstance().getReference("uploaded solution");
-
         mButtonChooseImage.setOnClickListener(v -> openFileChooser());
-
+        inte =getIntent().getIntExtra("teacherUploading",0);
         emailAddress=getIntent().getStringExtra("emailAdd");
         Log.d(TAG, "email ye he"+emailAddress);
         String s= mDatabaseRef.orderByChild("email").equalTo(emailAddress).toString();
         Log.d(TAG, "uploadFile: "+s);
-//        boolean intent =getIntent().getBooleanExtra("teacher",false);
-//        Log.d(TAG, "teacher he: "+ intent);
         mButtonUpload.setOnClickListener(v -> {
             if (mUploadTask != null && mUploadTask.isInProgress()) {
                 Toast.makeText(uploadImage.this, "Upload in progress", Toast.LENGTH_SHORT).show();
             } else {
                 uploadFile();
-                Toast.makeText(uploadImage.this, "Uploaded", Toast.LENGTH_SHORT).show();
+                Toast.makeText(uploadImage.this, "Uploading", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(this,ImageActivity.class));
+                finish();
             }
         });
         mTextViewShowUploads.setOnClickListener(v -> openImagesActivity());
@@ -83,7 +83,6 @@ public class uploadImage extends AppCompatActivity {
     }
 
     private void openFileChooser() {
-//        Intent intent = new Intent();
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -109,7 +108,7 @@ public class uploadImage extends AppCompatActivity {
     }
 
     private void uploadFile() {
-        int inte =getIntent().getIntExtra("teacherUploading",0);
+        inte =getIntent().getIntExtra("teacherUploading",0);
         if(inte==1){
         if (mImageUri != null) {
             StorageReference fileReference = mStorageRef.child(System.currentTimeMillis()
@@ -149,9 +148,7 @@ public class uploadImage extends AppCompatActivity {
                         Task<Uri> urlTask = taskSnapshot.getStorage().getDownloadUrl();
                         while (!urlTask.isSuccessful());
                         Uri downloadUrl = urlTask.getResult();
-                        //mDatabaseRef = FirebaseDatabase.getInstance().getReference("uploadedUserDetail");
                         Upload upload = new Upload(mEditTextFileName.getText().toString().trim(),downloadUrl.toString(),null,null);
-//                        String uploadId = mDatabaseRef.push().getKey();
                         String uploadId = mDatabaseRef.push().getKey();
                         mDatabaseRef.child(uploadId).setValue(upload);
                     })
@@ -168,6 +165,9 @@ public class uploadImage extends AppCompatActivity {
 
     private void openImagesActivity() {
         Intent intent = new Intent(this, ImageActivity.class);
+        inte =getIntent().getIntExtra("teacherUploading",0);
+        intent.putExtra("teacherAccount",inte);
+        Log.d(TAG, "here inte");
         startActivity(intent);
     }
 }

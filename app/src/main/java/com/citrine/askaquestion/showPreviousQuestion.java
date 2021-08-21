@@ -66,8 +66,6 @@ public class showPreviousQuestion extends AppCompatActivity {
                 long seconds=(millisUntilFinished %60000)/1000;
                 mTextField.setText("Time remaining: " + minutes+ " minutes and " +seconds+"seconds");
                 mTextField.setOnClickListener(null);
-
-                //here you can have your logic to set text to edittext
             }
             public void onFinish() {
                 mTextField.setText("done!");
@@ -81,6 +79,7 @@ public class showPreviousQuestion extends AppCompatActivity {
                 intent.putExtra("imageURL",imageUrl);
                 intent.putExtra("imageDesc",name);
                 startActivity(intent);
+                finish();
             }
 
         }

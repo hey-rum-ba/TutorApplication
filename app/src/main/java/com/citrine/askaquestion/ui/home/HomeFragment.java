@@ -12,15 +12,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.citrine.askaquestion.ImageActivity;
 import com.citrine.askaquestion.ImageAdapter;
+import com.citrine.askaquestion.MainActivity;
 import com.citrine.askaquestion.Upload;
+import com.citrine.askaquestion.UploadToFireBase;
 import com.citrine.askaquestion.uploadImage;
 import com.citrine.askaquestion.databinding.FragmentHomeBinding;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -59,10 +65,11 @@ public class HomeFragment extends Fragment {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mUploads = new ArrayList<>();
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("uploadedUserDetails");
-        mDatabaseRef1 = FirebaseDatabase.getInstance().getReference("uploads for students");
+        mDatabaseRef1 = FirebaseDatabase.getInstance().getReference("uploadedUserDetails");
         emailAddress = getActivity().getIntent().getStringExtra("emailAddress");
         if(emailAddress!=null)
         {mDatabaseRef.orderByChild("email").equalTo(emailAddress).addValueEventListener(new ValueEventListener() {
+
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 mDatabaseRef1.addValueEventListener(new ValueEventListener() {
@@ -80,7 +87,7 @@ public class HomeFragment extends Fragment {
                     }
                 });
 
-                mAdapter = new ImageAdapter(getActivity(), mUploads);
+                mAdapter = new ImageAdapter(getActivity(), mUploads,0);
                 mRecyclerView.setAdapter(mAdapter);
             }
 
@@ -89,19 +96,13 @@ public class HomeFragment extends Fragment {
                 Toast.makeText(getActivity(), databaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-    }
 
-        Log.d(TAG, "here is email in homefrag" + emailAddress);
-
-        final TextView textView = binding.textHome;
-        textView.setText("Click here to request new question");
-        textView.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), uploadImage.class);
-            emailAddress = getActivity().getIntent().getStringExtra("emailAddress");
-            Log.d(TAG, "here is email in homefrag" + emailAddress);
-            intent.putExtra("emailAdd",emailAddress);
-            startActivity(intent);
-        });
+        }
+        textView= binding.textHome;
+        textView.setText("Click here Visit all QnAs");
+            textView.setOnClickListener(v -> {
+                Intent intent = new Intent(getActivity(),ImageActivity.class);
+                startActivity(intent);});
         return root;
 
     }

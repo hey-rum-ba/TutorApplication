@@ -16,15 +16,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 
+import java.net.URISyntaxException;
 import java.util.List;
 
 public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHolder> {
     private Context mContext;
     private List<Upload> mUploads;
+    private int mI;
 
-    public ImageAdapter(Context context, List<Upload> uploads) {
+    public ImageAdapter(Context context, List<Upload> uploads, int i) {
         mContext = context;
         mUploads = uploads;
+        mI =i;
     }
 
     @Override
@@ -46,18 +49,22 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
         if(uploadCurrent.getName1()==null)holder.itemView.setBackgroundColor(Color.parseColor("#FFBB86FC"));
         else holder.itemView.setBackgroundColor(Color.parseColor("#FF018786"));
         holder.itemView.setOnClickListener(v->{
-//            Intent intent1= new Intent(mContext,uploadImage.class);
-//            intent1.putExtra("imageURL",uploadCurrent.getImageUrl());
-//            intent1.putExtra("imageDesc",uploadCurrent.getName());
-//            Log.d(TAG, "sending url "+uploadCurrent.getImageUrl());
 
+            Log.d(TAG, "iidhar "+mI);
 
             Intent intent;
-            if(uploadCurrent.getName1()!=null){
+            if(uploadCurrent.getName1()==null && mI==0){
             intent = new Intent(mContext, completeSolution.class);
             intent.putExtra("image",uploadCurrent.getImageUrl());
             intent.putExtra("image1",uploadCurrent.getImageUrl1());
-            intent.putExtra("Name1",uploadCurrent.getName1());
+            intent.putExtra("Name",uploadCurrent.getName());
+            intent.putExtra("Name1","Question is yet to be solved by tutor");
+            }
+            else if(uploadCurrent.getName1()!=null) {
+                intent = new Intent(mContext, completeSolution.class);
+                intent.putExtra("image",uploadCurrent.getImageUrl());
+                intent.putExtra("image1",uploadCurrent.getImageUrl1());
+                intent.putExtra("Name1",uploadCurrent.getName1());
             }
         else {
                 intent = new Intent(mContext, showPreviousQuestion.class);

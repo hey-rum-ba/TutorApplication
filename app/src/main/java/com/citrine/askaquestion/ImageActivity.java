@@ -48,7 +48,8 @@ public class ImageActivity extends AppCompatActivity {
                     Upload upload = postSnapshot.getValue(Upload.class);
                     mUploads.add(upload);
                 }
-                mAdapter = new ImageAdapter(ImageActivity.this, mUploads);
+                int i =getIntent().getIntExtra("teacherAccountIsActive",0);
+                mAdapter = new ImageAdapter(ImageActivity.this, mUploads,i);
                 mRecyclerView.setAdapter(mAdapter);
                 mProgressCircle.setVisibility(View.INVISIBLE);
             }
