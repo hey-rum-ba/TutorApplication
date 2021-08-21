@@ -1,6 +1,7 @@
 package com.citrine.askaquestion;
 
 public class Upload {
+    private String email;
     private String mName;
     private String mImageUrl;
     private String nName1;
@@ -9,11 +10,20 @@ public class Upload {
     public Upload() {
     }
 
-    public Upload(String mName, String mImageUrl, String nName1, String mImageUrl1) {
+    public Upload(String email, String mName, String mImageUrl, String nName1, String mImageUrl1) {
+        this.email = email;
         this.mName = mName;
         this.mImageUrl = mImageUrl;
         this.nName1 = nName1;
         this.mImageUrl1 = mImageUrl1;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getName() {

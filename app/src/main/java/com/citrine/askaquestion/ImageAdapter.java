@@ -49,12 +49,10 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
         if(uploadCurrent.getName1()==null)holder.itemView.setBackgroundColor(Color.parseColor("#FFBB86FC"));
         else holder.itemView.setBackgroundColor(Color.parseColor("#FF018786"));
         holder.itemView.setOnClickListener(v->{
-
-            Log.d(TAG, "iidhar "+mI);
-
             Intent intent;
             if(uploadCurrent.getName1()==null && mI==0){
             intent = new Intent(mContext, completeSolution.class);
+            intent.putExtra("emailAddresses",uploadCurrent.getEmail());
             intent.putExtra("image",uploadCurrent.getImageUrl());
             intent.putExtra("image1",uploadCurrent.getImageUrl1());
             intent.putExtra("Name",uploadCurrent.getName());
@@ -62,12 +60,14 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
             }
             else if(uploadCurrent.getName1()!=null) {
                 intent = new Intent(mContext, completeSolution.class);
+                intent.putExtra("emailAddresses",uploadCurrent.getEmail());
                 intent.putExtra("image",uploadCurrent.getImageUrl());
                 intent.putExtra("image1",uploadCurrent.getImageUrl1());
                 intent.putExtra("Name1",uploadCurrent.getName1());
             }
         else {
                 intent = new Intent(mContext, showPreviousQuestion.class);
+                intent.putExtra("emailAddresses",uploadCurrent.getEmail());
                 intent.putExtra("image", uploadCurrent.getImageUrl());
                 intent.putExtra("Name1","Question is not solved yet");
             }

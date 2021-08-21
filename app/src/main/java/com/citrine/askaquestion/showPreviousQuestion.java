@@ -37,6 +37,7 @@ public class showPreviousQuestion extends AppCompatActivity {
         skip =findViewById(R.id.skip);
         String name= getIntent().getStringExtra("Name");
         String imageUrl=getIntent().getStringExtra("image");
+        String emailAddress=getIntent().getStringExtra("emailAddresses");
         textView.setText(name);
         countDownTimer = new CountDownTimer(600000, 1000) {
 
@@ -76,10 +77,10 @@ public class showPreviousQuestion extends AppCompatActivity {
             else if(i==1){
                 Intent intent=new Intent(this, uploadImage.class);
                 intent.putExtra("teacherUploading",1);
+                intent.putExtra("emailAddresses",emailAddress);
                 intent.putExtra("imageURL",imageUrl);
                 intent.putExtra("imageDesc",name);
                 startActivity(intent);
-                finish();
             }
 
         }
@@ -91,7 +92,12 @@ public class showPreviousQuestion extends AppCompatActivity {
                 .placeholder(R.mipmap.ic_launcher)
                 .into(imageview);
         skip.setOnClickListener(v -> {
-            startActivity(new Intent(showPreviousQuestion.this, ImageActivity.class));
+            Intent intent = new Intent(showPreviousQuestion.this, ImageActivity.class);
+            intent.putExtra("teacherAccountIsActive",1);
+            intent.putExtra("emailAddresses",emailAddress);
+            intent.putExtra("imageURL",imageUrl);
+            intent.putExtra("imageDesc",name);
+            startActivity(intent);
             finish();
         });
     }

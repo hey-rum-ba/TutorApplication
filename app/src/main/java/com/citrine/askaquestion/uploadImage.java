@@ -64,7 +64,7 @@ public class uploadImage extends AppCompatActivity {
         mDatabaseRef1 = FirebaseDatabase.getInstance().getReference("uploaded solution");
         mButtonChooseImage.setOnClickListener(v -> openFileChooser());
         inte =getIntent().getIntExtra("teacherUploading",0);
-        emailAddress=getIntent().getStringExtra("emailAdd");
+        emailAddress=getIntent().getStringExtra("emailAddress");
         Log.d(TAG, "email ye he"+emailAddress);
         String s= mDatabaseRef.orderByChild("email").equalTo(emailAddress).toString();
         Log.d(TAG, "uploadFile: "+s);
@@ -74,12 +74,9 @@ public class uploadImage extends AppCompatActivity {
             } else {
                 uploadFile();
                 Toast.makeText(uploadImage.this, "Uploading", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(this,ImageActivity.class));
-                finish();
             }
         });
         mTextViewShowUploads.setOnClickListener(v -> openImagesActivity());
-
     }
 
     private void openFileChooser() {
@@ -121,10 +118,8 @@ public class uploadImage extends AppCompatActivity {
                         Uri downloadUrl = urlTask.getResult();
                         String url= getIntent().getStringExtra("imageURL");
                         String name= getIntent().getStringExtra("imageDesc");
-                        Log.d(TAG, "getting url"+url);
-
-
-                        Upload upload = new Upload(name,url,mEditTextFileName.getText().toString().trim(),downloadUrl.toString());
+                        String emailAddress=getIntent().getStringExtra("emailAddresses");
+                        Upload upload = new Upload(emailAddress,name,url,mEditTextFileName.getText().toString().trim(),downloadUrl.toString());
                         String uploadId = mDatabaseRef1.push().getKey();
                         mDatabaseRef.child(uploadId).setValue(upload);
                     })
@@ -148,7 +143,8 @@ public class uploadImage extends AppCompatActivity {
                         Task<Uri> urlTask = taskSnapshot.getStorage().getDownloadUrl();
                         while (!urlTask.isSuccessful());
                         Uri downloadUrl = urlTask.getResult();
-                        Upload upload = new Upload(mEditTextFileName.getText().toString().trim(),downloadUrl.toString(),null,null);
+                        String emailAddress=getIntent().getStringExtra("emailAddress");
+                        Upload upload = new Upload(emailAddress,mEditTextFileName.getText().toString().trim(),downloadUrl.toString(),null,null);
                         String uploadId = mDatabaseRef.push().getKey();
                         mDatabaseRef.child(uploadId).setValue(upload);
                     })
@@ -166,8 +162,9 @@ public class uploadImage extends AppCompatActivity {
     private void openImagesActivity() {
         Intent intent = new Intent(this, ImageActivity.class);
         inte =getIntent().getIntExtra("teacherUploading",0);
-        intent.putExtra("teacherAccount",inte);
-        Log.d(TAG, "here inte");
+        intent.putExtra("teacherAccountIsActive",inte);
+        intent.putExtra("emailAddress",emailAddress);
         startActivity(intent);
+        finish();
     }
 }

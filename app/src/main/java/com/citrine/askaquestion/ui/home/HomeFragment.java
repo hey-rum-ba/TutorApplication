@@ -102,6 +102,7 @@ public class HomeFragment extends Fragment {
         textView.setText("Click here Visit all QnAs");
             textView.setOnClickListener(v -> {
                 Intent intent = new Intent(getActivity(),ImageActivity.class);
+                intent.putExtra("teacherAccountIsActive",1);
                 startActivity(intent);});
         return root;
 

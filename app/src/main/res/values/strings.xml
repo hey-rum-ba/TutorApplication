@@ -29,7 +29,7 @@
     <string name="name">Name</string>
     <string name="register">Register</string>
     <string name="create_a_new_acount">Create a New Acount</string>
-    <string name="signIn_as_a_tutor">Signin as A Tutor</string>
+    <string name="signIn_as_a_tutor">Register as a Tutor</string>
     <string name="LogOut">LogOut</string>
     <string name="description">Description</string>
     <string name="show_previous_QNA">Show Previous QNAs</string>

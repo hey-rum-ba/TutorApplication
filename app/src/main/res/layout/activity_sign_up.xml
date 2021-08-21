@@ -79,6 +79,24 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editPass" />
 
+    <CheckedTextView
+        android:id="@+id/checkedTextView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginBottom="6dp"
+        android:text='By checking "Tutor" up you will be registered as a tutor or else a student by  default. Please verify your e-mail address.' />
+
+    <CheckBox
+        android:id="@+id/checkBox2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:text="Agreed to all Terms and Conditions" />
+
     <Button
         android:id="@+id/buttonAcount"
         android:layout_width="wrap_content"

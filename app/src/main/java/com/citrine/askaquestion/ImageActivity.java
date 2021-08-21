@@ -41,14 +41,19 @@ public class ImageActivity extends AppCompatActivity {
 
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("uploads for students");
 
-       mDatabaseRef.addValueEventListener(new ValueEventListener() {
+
+        emailAddress =getIntent().getStringExtra("emailAddress");
+//        Log.d(TAG, "email in image acti"+emailAddress);
+        int i =getIntent().getIntExtra("teacherAccountIsActive",0);
+        Log.d(TAG, "here are the isss"+i);
+        if(i==0){
+       mDatabaseRef.orderByChild("email").equalTo(emailAddress).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     Upload upload = postSnapshot.getValue(Upload.class);
                     mUploads.add(upload);
                 }
-                int i =getIntent().getIntExtra("teacherAccountIsActive",0);
                 mAdapter = new ImageAdapter(ImageActivity.this, mUploads,i);
                 mRecyclerView.setAdapter(mAdapter);
                 mProgressCircle.setVisibility(View.INVISIBLE);
@@ -59,5 +64,26 @@ public class ImageActivity extends AppCompatActivity {
                 mProgressCircle.setVisibility(View.INVISIBLE);
             }
         });
+        }
+        else {
+            mDatabaseRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                        Upload upload = postSnapshot.getValue(Upload.class);
+                        mUploads.add(upload);
+                    }
+                    int i =getIntent().getIntExtra("teacherAccountIsActive",0);
+                    mAdapter = new ImageAdapter(ImageActivity.this, mUploads,i);
+                    mRecyclerView.setAdapter(mAdapter);
+                    mProgressCircle.setVisibility(View.INVISIBLE);
+                }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    Toast.makeText(ImageActivity.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                    mProgressCircle.setVisibility(View.INVISIBLE);
+                }
+            });
+        }
     }
 }

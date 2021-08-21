@@ -79,8 +79,8 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                     UploadToFireBase upload = snapshot.getValue(UploadToFireBase.class);
-                    Log.d(TAG, "here is username " + upload.getUsername());
-                    Log.d(TAG, "here is username lol" + upload.isTeacher());
+//                    Log.d(TAG, "here is username " + upload.getUsername());
+//                    Log.d(TAG, "here is username lol" + upload.isTeacher());
 
                     if (upload.isTeacher()) {
                         Toast.makeText(MainActivity.this, "This is a teacher account", Toast.LENGTH_SHORT).show();
@@ -99,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
                         binding.appBarMain.fab.setOnLongClickListener(v -> {
                             Intent intent1=new Intent(MainActivity.this, uploadImage.class);
                             intent1.putExtra("setting",1);
+                            intent1.putExtra("emailAddress",emailAddress);
                             startActivity(intent1);
                             return true;
                         });
