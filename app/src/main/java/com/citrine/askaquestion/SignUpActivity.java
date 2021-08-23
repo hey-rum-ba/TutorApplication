@@ -56,7 +56,6 @@ public class SignUpActivity extends AppCompatActivity {
             password = findViewById(R.id.editPass);
             register = findViewById(R.id.buttonAcount);
             checkingBox =findViewById(R.id.checkBox);
-
             auth =FirebaseAuth.getInstance();
             database =FirebaseDatabase.getInstance().getReference("uploadedUserDetail");
             mDatabaseRef = FirebaseDatabase.getInstance().getReference("uploadedUserDetail");
@@ -81,16 +80,8 @@ public class SignUpActivity extends AppCompatActivity {
                     uploadFile(txtUsername,txtEmail,txtPassword,b);
                     Intent intent =new Intent(SignUpActivity.this,MainActivity.class);
                     intent.putExtra("teacher",b);
-                    if(user != null){
-                    user.sendEmailVerification()
-                            .addOnCompleteListener(task -> {
-                                if (task.isSuccessful()) {
-                                    Log.d(TAG, "Email sent.");
-                                    Toast.makeText(SignUpActivity.this,
-                                            "Please Verify Your Email Address", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                }}
+
+                    }
             finish();
 
             });
@@ -99,7 +90,16 @@ public class SignUpActivity extends AppCompatActivity {
         private void registerUser(String Username, String Email, String Password) {
         auth=FirebaseAuth.getInstance();
             auth.createUserWithEmailAndPassword(Email, Password).addOnSuccessListener(authResult ->
-                    Toast.makeText(SignUpActivity.this, "Successfully Registered the User", Toast.LENGTH_SHORT).show());
+                    auth.getCurrentUser().sendEmailVerification()
+                            .addOnCompleteListener(task -> {
+                                if (task.isSuccessful()) {
+                                    Log.d(TAG, "Email sent.");
+                                    Toast.makeText(SignUpActivity.this,
+                                            "Please Verify Your Email Address", Toast.LENGTH_SHORT).show();
+                                }
+                            })
+            );
+
         }
 
         private void uploadFile(String username, String email, String password, boolean b) {

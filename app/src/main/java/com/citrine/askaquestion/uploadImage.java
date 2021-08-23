@@ -26,6 +26,9 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
+import java.io.FileInputStream;
+
 public class uploadImage extends AppCompatActivity {
 
     private static final int PICK_IMAGE_REQUEST = 1;
@@ -86,6 +89,7 @@ public class uploadImage extends AppCompatActivity {
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intent, PICK_IMAGE_REQUEST);
+
     }
 
     @Override
