@@ -32,4 +32,14 @@
         app:srcCompat="@drawable/ic_stat_name"
         tools:ignore="SpeakableTextPresentCheck" />
 
+    <TextView
+        android:id="@+id/settingText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|left"
+        android:layout_marginBottom="30dp"
+        android:layout_marginStart="16dp"
+        android:textSize="14sp"
+        android:text=" " />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

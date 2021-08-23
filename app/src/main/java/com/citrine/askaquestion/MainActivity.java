@@ -82,25 +82,21 @@ public class MainActivity extends AppCompatActivity {
                     UploadToFireBase upload = snapshot.getValue(UploadToFireBase.class);
 
                     if (upload.isTeacher()) {
-                        Toast.makeText(MainActivity.this, "This is a teacher account", Toast.LENGTH_SHORT).show();
-                        binding.appBarMain.fab.setOnClickListener(view -> Snackbar.make(view, "Hold for answering a new question", Snackbar.LENGTH_LONG)
-                                .setAction("Action", null).show());
-                        binding.appBarMain.fab.setOnLongClickListener(v -> {
+//                        Toast.makeText(MainActivity.this, "This is a teacher account", Toast.LENGTH_SHORT).show();
+                        binding.appBarMain.settingText.setText("Click on the button for answering a new question");
+                        binding.appBarMain.fab.setOnClickListener(v -> {
                             Intent intent1=new Intent(MainActivity.this, ImageActivity.class);
                             intent1.putExtra("teacherAccountIsActive",1);
                             startActivity(intent1);
-                            return true;
                         });
                     } else {
-                        Toast.makeText(MainActivity.this, "This is a student account", Toast.LENGTH_SHORT).show();
-                        binding.appBarMain.fab.setOnClickListener(view -> Snackbar.make(view, "Hold for asking a new question", Snackbar.LENGTH_LONG)
-                                .setAction("Action", null).show());
-                        binding.appBarMain.fab.setOnLongClickListener(v -> {
+//                        Toast.makeText(MainActivity.this, "This is a student account", Toast.LENGTH_SHORT).show();
+                        binding.appBarMain.settingText.setText("Click on the button for asking a new question");
+                        binding.appBarMain.fab.setOnClickListener(v -> {
                             Intent intent1=new Intent(MainActivity.this, uploadImage.class);
                             intent1.putExtra("setting",1);
                             intent1.putExtra("emailAddress",emailAddress);
                             startActivity(intent1);
-                            return true;
                         });
                     }
                 }

@@ -77,7 +77,7 @@ public class showPreviousQuestion extends AppCompatActivity {
             else if(i==1){
                 Intent intent=new Intent(this, uploadImage.class);
                 intent.putExtra("teacherUploading",1);
-                intent.putExtra("emailAddresses",emailAddress);
+                intent.putExtra("emailAddress",emailAddress);
                 intent.putExtra("imageURL",imageUrl);
                 intent.putExtra("imageDesc",name);
                 startActivity(intent);
@@ -93,12 +93,12 @@ public class showPreviousQuestion extends AppCompatActivity {
                 .placeholder(R.mipmap.ic_launcher)
                 .into(imageview);
         skip.setOnClickListener(v -> {
-            Intent intent = new Intent(showPreviousQuestion.this, ImageActivity.class);
-            intent.putExtra("teacherAccountIsActive",1);
-            intent.putExtra("emailAddresses",emailAddress);
-            intent.putExtra("imageURL",imageUrl);
-            intent.putExtra("imageDesc",name);
-            startActivity(intent);
+//            Intent intent = new Intent(showPreviousQuestion.this, ImageActivity.class);
+//            intent.putExtra("teacherAccountIsActive",1);
+//            intent.putExtra("emailAddresses",emailAddress);
+//            intent.putExtra("imageURL",imageUrl);
+//            intent.putExtra("imageDesc",name);
+//            startActivity(intent);
             finish();
         });
     }

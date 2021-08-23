@@ -19,7 +19,8 @@
         android:layout_marginStart="16dp"
         android:layout_toEndOf="@+id/button_choose_image"
         android:hint="@string/description"
-        android:minHeight="48dp" />
+        android:minHeight="48dp"
+        android:textSize="18sp" />
 
     <ImageView
         android:id="@+id/image_view"

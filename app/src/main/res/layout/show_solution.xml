@@ -35,7 +35,8 @@
         android:layout_margin="8dp"
         android:gravity="center_horizontal"
         android:minHeight="48dp"
-        android:text="The Description of the question" />
+        android:text="The Description of the question"
+        android:textSize="18sp" />
 
     <LinearLayout
         android:layout_width="match_parent"

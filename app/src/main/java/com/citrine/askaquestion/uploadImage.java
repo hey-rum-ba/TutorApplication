@@ -74,6 +74,7 @@ public class uploadImage extends AppCompatActivity {
             } else {
                 uploadFile();
                 Toast.makeText(uploadImage.this, "Uploading", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Check your question on QnA", Toast.LENGTH_SHORT).show();
             }
         });
         mTextViewShowUploads.setOnClickListener(v -> openImagesActivity());
@@ -81,6 +82,7 @@ public class uploadImage extends AppCompatActivity {
 
     private void openFileChooser() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE,true);
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intent, PICK_IMAGE_REQUEST);
@@ -106,8 +108,9 @@ public class uploadImage extends AppCompatActivity {
 
     private void uploadFile() {
         inte =getIntent().getIntExtra("teacherUploading",0);
+        Log.d(TAG, "email in upload file"+emailAddress);
         if(inte==1){
-        if (mImageUri != null) {
+        if (mImageUri != null && !mEditTextFileName.getText().toString().trim().equals("")) {
             StorageReference fileReference = mStorageRef.child(System.currentTimeMillis()
                     + "." + getFileExtension(mImageUri));
 
@@ -118,7 +121,7 @@ public class uploadImage extends AppCompatActivity {
                         Uri downloadUrl = urlTask.getResult();
                         String url= getIntent().getStringExtra("imageURL");
                         String name= getIntent().getStringExtra("imageDesc");
-                        String emailAddress=getIntent().getStringExtra("emailAddresses");
+                        String emailAddress= getIntent().getStringExtra("emailAddress");
                         Upload upload = new Upload(emailAddress,name,url,mEditTextFileName.getText().toString().trim(),downloadUrl.toString());
                         String uploadId = mDatabaseRef1.push().getKey();
                         mDatabaseRef.child(uploadId).setValue(upload);
@@ -128,13 +131,23 @@ public class uploadImage extends AppCompatActivity {
                         double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
                         mProgressBar.setProgress((int) progress);
                     });
-        } else {
+        }
+        else if(mImageUri == null && !mEditTextFileName.getText().toString().trim().equals("")){
+            String url= getIntent().getStringExtra("imageURL");
+            String name= getIntent().getStringExtra("imageDesc");
+            String emailAddress= getIntent().getStringExtra("emailAddress");
+            Upload upload = new Upload(emailAddress,name,url,mEditTextFileName.getText().toString().trim(),null);
+            String uploadId = mDatabaseRef1.push().getKey();
+            mDatabaseRef.child(uploadId).setValue(upload);
+        }
+
+        else {
             Toast.makeText(this, "No file selected", Toast.LENGTH_SHORT).show();
         }
     }
     else
     {
-        if (mImageUri != null) {
+        if (mImageUri != null && !mEditTextFileName.getText().toString().trim().equals("")) {
             StorageReference fileReference = mStorageRef.child(System.currentTimeMillis()
                     + "." + getFileExtension(mImageUri));
 
@@ -143,7 +156,7 @@ public class uploadImage extends AppCompatActivity {
                         Task<Uri> urlTask = taskSnapshot.getStorage().getDownloadUrl();
                         while (!urlTask.isSuccessful());
                         Uri downloadUrl = urlTask.getResult();
-                        String emailAddress=getIntent().getStringExtra("emailAddress");
+                        String emailAddress= getIntent().getStringExtra("emailAddress");
                         Upload upload = new Upload(emailAddress,mEditTextFileName.getText().toString().trim(),downloadUrl.toString(),null,null);
                         String uploadId = mDatabaseRef.push().getKey();
                         mDatabaseRef.child(uploadId).setValue(upload);
@@ -153,7 +166,17 @@ public class uploadImage extends AppCompatActivity {
                         double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
                         mProgressBar.setProgress((int) progress);
                     });
-        } else {
+        }
+
+        else if(mImageUri == null && !mEditTextFileName.getText().toString().trim().equals("")){
+
+            String emailAddress= getIntent().getStringExtra("emailAddress");
+            Log.d(TAG, "student email"+emailAddress);
+            Upload upload = new Upload(emailAddress,mEditTextFileName.getText().toString().trim(),null,null,null);
+            String uploadId = mDatabaseRef1.push().getKey();
+            mDatabaseRef.child(uploadId).setValue(upload);
+        }
+        else {
             Toast.makeText(this, "No file selected", Toast.LENGTH_SHORT).show();
         }
     }

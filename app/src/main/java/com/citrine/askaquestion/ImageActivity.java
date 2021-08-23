@@ -39,15 +39,9 @@ public class ImageActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mProgressCircle = findViewById(R.id.progress_circle);
         mUploads = new ArrayList<>();
-
-
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("uploads for students");
-
-
         emailAddress =getIntent().getStringExtra("emailAddress");
-//        Log.d(TAG, "email in image acti"+emailAddress);
         int i =getIntent().getIntExtra("teacherAccountIsActive",0);
-        Log.d(TAG, "here are the isss"+i);
         if(i==0){
        mDatabaseRef.orderByChild("email").equalTo(emailAddress).addValueEventListener(new ValueEventListener() {
             @Override
@@ -57,7 +51,7 @@ public class ImageActivity extends AppCompatActivity {
                     mUploads.add(upload);
                     Collections.reverse(mUploads);
                 }
-                mAdapter = new ImageAdapter(ImageActivity.this, mUploads,i);
+                mAdapter = new ImageAdapter(ImageActivity.this, mUploads,0);
                 mRecyclerView.setAdapter(mAdapter);
                 mProgressCircle.setVisibility(View.INVISIBLE);
             }
