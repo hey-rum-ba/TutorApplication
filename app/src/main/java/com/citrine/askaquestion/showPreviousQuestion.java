@@ -81,6 +81,7 @@ public class showPreviousQuestion extends AppCompatActivity {
                 intent.putExtra("imageURL",imageUrl);
                 intent.putExtra("imageDesc",name);
                 startActivity(intent);
+                finish();
             }
 
         }

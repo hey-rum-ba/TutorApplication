@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.squareup.picasso.Picasso;
 
 import java.net.URISyntaxException;
+import java.util.Collection;
 import java.util.List;
 
 public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHolder> {
@@ -75,6 +76,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
             else {
                     intent.putExtra("Name",uploadCurrent.getName());
                 }
+
             mContext.startActivity(intent);
         });
     }

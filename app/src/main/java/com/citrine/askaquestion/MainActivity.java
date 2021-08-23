@@ -63,7 +63,8 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow)
+                R.id.nav_home)
+//               , R.id.nav_gallery, R.id.nav_slideshow)
                 .setOpenableLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
@@ -79,8 +80,6 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                     UploadToFireBase upload = snapshot.getValue(UploadToFireBase.class);
-//                    Log.d(TAG, "here is username " + upload.getUsername());
-//                    Log.d(TAG, "here is username lol" + upload.isTeacher());
 
                     if (upload.isTeacher()) {
                         Toast.makeText(MainActivity.this, "This is a teacher account", Toast.LENGTH_SHORT).show();

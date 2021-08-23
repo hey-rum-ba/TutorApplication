@@ -2,6 +2,7 @@ package com.citrine.askaquestion.ui.home;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -52,6 +53,7 @@ public class HomeFragment extends Fragment {
     private DatabaseReference dbref;
     private Context context;
     private TextView textView;
+    private TextView textView1;
     String emailAddress;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -99,11 +101,21 @@ public class HomeFragment extends Fragment {
 
         }
         textView= binding.textHome;
-        textView.setText("Click here Visit all QnAs");
-            textView.setOnClickListener(v -> {
-                Intent intent = new Intent(getActivity(),ImageActivity.class);
-                intent.putExtra("teacherAccountIsActive",1);
-                startActivity(intent);});
+        textView1= binding.webSiteText;
+
+        textView.setText("Welcome to Citrine QnA Application\n " +
+                "Please visit us @");
+        textView1.setText("www.citrineweb.com");
+            textView1.setOnClickListener(v->{
+                String url= "https://citrineweb.com/";
+                Intent intent= new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(url));
+                startActivity(intent);
+            });
+//            textView.setOnClickListener(v -> {
+//                Intent intent = new Intent(getActivity(),ImageActivity.class);
+//                intent.putExtra("teacherAccountIsActive",0);
+//                startActivity(intent);});
         return root;
 
     }

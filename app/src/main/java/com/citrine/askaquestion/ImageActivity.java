@@ -19,6 +19,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class ImageActivity extends AppCompatActivity {
@@ -53,6 +55,7 @@ public class ImageActivity extends AppCompatActivity {
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     Upload upload = postSnapshot.getValue(Upload.class);
                     mUploads.add(upload);
+                    Collections.reverse(mUploads);
                 }
                 mAdapter = new ImageAdapter(ImageActivity.this, mUploads,i);
                 mRecyclerView.setAdapter(mAdapter);
@@ -72,6 +75,7 @@ public class ImageActivity extends AppCompatActivity {
                     for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                         Upload upload = postSnapshot.getValue(Upload.class);
                         mUploads.add(upload);
+                        Collections.reverse(mUploads);
                     }
                     int i =getIntent().getIntExtra("teacherAccountIsActive",0);
                     mAdapter = new ImageAdapter(ImageActivity.this, mUploads,i);

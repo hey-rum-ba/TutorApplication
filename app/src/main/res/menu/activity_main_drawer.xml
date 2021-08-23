@@ -7,11 +7,11 @@
         <item
             android:id="@+id/nav_home"
             android:title="@string/menu_home" />
-        <item
-            android:id="@+id/nav_gallery"
-            android:title="@string/gate_calculator" />
-        <item
-            android:id="@+id/nav_slideshow"
-            android:title="@string/previous_year_papers" />
+<!--        <item-->
+<!--            android:id="@+id/nav_gallery"-->
+<!--            android:title="@string/gate_calculator" />-->
+<!--        <item-->
+<!--            android:id="@+id/nav_slideshow"-->
+<!--            android:title="@string/previous_year_papers" />-->
     </group>
 </menu>
