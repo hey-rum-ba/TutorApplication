@@ -25,7 +25,7 @@
             android:gravity="center_horizontal"
             android:minHeight="48dp"
             android:text="The Description of the question"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
 
         <ImageView
             android:id="@+id/solvedShow"

@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         try{
         Intent intent = getIntent();
         String emailAddress = intent.getStringExtra("emailAddress");
-        Log.d(TAG, "here is email " + emailAddress);
+//        Log.d(TAG, "here is email " + emailAddress);
         if (emailAddress != null)
         {
             databaseReference.orderByChild("email").equalTo(emailAddress).addChildEventListener(new ChildEventListener() {
@@ -122,7 +122,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
-       else Toast.makeText(this, "Please Login to Access", Toast.LENGTH_SHORT).show();} catch (Exception e) {
+       else Toast.makeText(this, "Please Login to Access", Toast.LENGTH_LONG).show();} catch (Exception e) {
+            binding.appBarMain.settingText.setText("Please Login to enable QnA button");
             e.printStackTrace();
         }
     }

@@ -2,8 +2,14 @@ package com.citrine.askaquestion;
 
 import static android.content.ContentValues.TAG;
 
+import android.content.ClipData;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuffXfermode;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -28,10 +34,14 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public class uploadImage extends AppCompatActivity {
 
-    private static final int PICK_IMAGE_REQUEST = 1;
+    private static final int PICK_IMAGE_REQUEST =1;
 
     private Button mButtonChooseImage;
     private Button mButtonUpload;
@@ -42,6 +52,9 @@ public class uploadImage extends AppCompatActivity {
     private String emailAddress;
     private int n;
     private Uri mImageUri;
+    private Uri imageUri;
+    private Canvas canvas;
+    private Paint paint;
     private int inte;
     private StorageReference mStorageRef;
     private DatabaseReference mDatabaseRef;
@@ -76,8 +89,7 @@ public class uploadImage extends AppCompatActivity {
                 Toast.makeText(uploadImage.this, "Upload in progress", Toast.LENGTH_SHORT).show();
             } else {
                 uploadFile();
-                Toast.makeText(uploadImage.this, "Uploading", Toast.LENGTH_SHORT).show();
-                Toast.makeText(this, "Check your question on QnA", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Check your uploads in QnA section", Toast.LENGTH_SHORT).show();
             }
         });
         mTextViewShowUploads.setOnClickListener(v -> openImagesActivity());
@@ -102,7 +114,65 @@ public class uploadImage extends AppCompatActivity {
 
             Picasso.get().load(mImageUri).into(mImageView);
         }
-    }
+
+
+//        if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK){
+//            final ImageView imageView = findViewById(R.id.image_view);
+//            final List<Bitmap> bitmaps = new ArrayList<>();
+//            ClipData clipData = data.getClipData();
+//            Bitmap[] parts = new Bitmap[clipData.getItemCount()];
+//            if (clipData != null) {
+//                for (int i = 0; i < clipData.getItemCount(); i++) {
+//                    Uri imageUri = clipData.getItemAt(i).getUri();
+//                    mImageUri = imageUri;
+//                    Log.d("URI", imageUri.toString());
+//                    try {
+//                        InputStream inputStream = getContentResolver().openInputStream(imageUri);
+//                        parts[i] = BitmapFactory.decodeStream(inputStream);
+//                        Log.d("URI in here ", parts[i].toString());
+//                    } catch (FileNotFoundException e) {
+//                        e.printStackTrace();
+//                    }
+//                    Bitmap result = Bitmap.createBitmap(parts[0].getWidth(), parts[0].getHeight()* clipData.getItemCount(), Bitmap.Config.ARGB_8888);
+//                    Log.d(TAG, "uri in canvas "+ result.getHeight()+" "+result.getWidth());
+//                    canvas = new Canvas(result);
+//                    canvas.setBitmap(result);
+//                    paint = new Paint();
+//                    for (int j = 0; j < clipData.getItemCount(); j++) {
+//
+//                        canvas.drawBitmap(parts[j], parts[j].getWidth() , parts[j].getHeight() * j, paint);
+//                        Log.d(TAG, "uri in canvas "+ parts[j].getHeight()+" "+parts[j].getWidth());
+//                    }
+//                    imageView.setImageBitmap(result);
+//                }
+//
+//            } else {
+//                //single image selected
+//                imageUri = data.getData();
+//                mImageUri = imageUri;
+//                Log.d("URI", imageUri.toString());
+//                try {
+//                    InputStream inputStream = getContentResolver().openInputStream(imageUri);
+//                    Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+//                    bitmaps.add(bitmap);
+//                    imageView.setImageBitmap(bitmap);
+//                } catch (FileNotFoundException e) {
+//                    e.printStackTrace();
+//                }
+//
+//            }
+//            new Thread(() -> {
+//                for (final Bitmap b : bitmaps) {
+//                    runOnUiThread(() -> imageView.setImageBitmap(b));
+//                    try {
+//                        Thread.sleep(2000);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }).start();
+
+        }
 
     private String getFileExtension(Uri uri) {
         ContentResolver cR = getContentResolver();
