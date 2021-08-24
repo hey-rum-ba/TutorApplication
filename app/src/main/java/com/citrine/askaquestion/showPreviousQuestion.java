@@ -89,7 +89,6 @@ public class showPreviousQuestion extends AppCompatActivity {
             );
         Picasso.get()
                 .load(imageUrl)
-                .resize(1500, 2200)
                 .placeholder(R.mipmap.ic_launcher)
                 .into(imageview);
         skip.setOnClickListener(v -> {

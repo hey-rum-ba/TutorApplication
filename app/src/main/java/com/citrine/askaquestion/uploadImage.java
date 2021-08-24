@@ -94,7 +94,8 @@ public class uploadImage extends AppCompatActivity {
                 Toast.makeText(this, "Upload in progress", Toast.LENGTH_SHORT).show();
             } else {
                 uploadFile();
-                Toast.makeText(this, "Check your uploads in QnA section", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Check your uploads in QnA section \n" +
+                        "once the upper progress bar is filled", Toast.LENGTH_SHORT).show();
             }
         });
         mJoinImage.setOnClickListener(v-> openFileChooser());

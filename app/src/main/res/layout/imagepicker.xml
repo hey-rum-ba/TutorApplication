@@ -43,9 +43,9 @@
         android:id="@+id/combineImages"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Join Images"
         android:layout_alignParentBottom="true"
-        />
+        android:layout_marginEnd="12dp"
+        android:text="Join Images" />
 
     <Button
         android:id="@+id/button_upload"
@@ -61,7 +61,7 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/button_upload"
         android:layout_alignBottom="@+id/button_upload"
-        android:layout_marginStart="25dp"
+        android:layout_marginStart="20dp"
         android:layout_toEndOf="@+id/button_upload"
         android:gravity="center"
         android:text="@string/show_previous_QNA"
