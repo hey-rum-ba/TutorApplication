@@ -72,13 +72,15 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
                 intent.putExtra("image", uploadCurrent.getImageUrl());
                 intent.putExtra("Name1","Question is not solved yet");
             }
-            if(uploadCurrent.getName()==null) {intent.putExtra("Name","No Name");}
+            if(uploadCurrent.getName()==null) {intent.putExtra("Name","No Description");}
             else {
                     intent.putExtra("Name",uploadCurrent.getName());
                 }
 
             mContext.startActivity(intent);
         });
+
+
     }
 
     @Override
