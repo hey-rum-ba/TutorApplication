@@ -40,6 +40,14 @@
         android:layout_marginBottom="16dp" />
 
     <Button
+        android:id="@+id/combineImages"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Join Images"
+        android:layout_alignParentBottom="true"
+        />
+
+    <Button
         android:id="@+id/button_upload"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

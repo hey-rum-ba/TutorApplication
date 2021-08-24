@@ -50,6 +50,7 @@ public class uploadImage extends AppCompatActivity {
 
     private Button mButtonChooseImage;
     private Button mButtonUpload;
+    private Button mJoinImage;
     private TextView mTextViewShowUploads;
     private EditText mEditTextFileName;
     private ImageView mImageView;
@@ -76,6 +77,7 @@ public class uploadImage extends AppCompatActivity {
         mTextViewShowUploads = findViewById(R.id.text_view_show_uploads);
         mEditTextFileName = findViewById(R.id.edit_text_file_name);
         mImageView = findViewById(R.id.image_view);
+        mJoinImage = findViewById(R.id.combineImages);
         mProgressBar = findViewById(R.id.progress_bar);
 
         mStorageRef = FirebaseStorage.getInstance().getReference("uploads for student");
@@ -89,13 +91,18 @@ public class uploadImage extends AppCompatActivity {
         Log.d(TAG, "uploadFile: "+s);
         mButtonUpload.setOnClickListener(v -> {
             if (mUploadTask != null && mUploadTask.isInProgress()) {
-                Toast.makeText(uploadImage.this, "Upload in progress", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Upload in progress", Toast.LENGTH_SHORT).show();
             } else {
                 uploadFile();
                 Toast.makeText(this, "Check your uploads in QnA section", Toast.LENGTH_SHORT).show();
             }
         });
+        mJoinImage.setOnClickListener(v-> openFileChooser());
         mTextViewShowUploads.setOnClickListener(v -> openImagesActivity());
+    }
+
+    private void combineImagesActivity() {
+
     }
 
     private void openFileChooser() {
@@ -130,7 +137,7 @@ public class uploadImage extends AppCompatActivity {
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
-                    mImageView.setImageBitmap(mergeMultiple(parts));
+                    mergeMultiple(parts);
                 }
             }
             else{

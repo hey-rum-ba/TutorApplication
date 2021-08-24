@@ -37,12 +37,10 @@ public class completeSolution extends AppCompatActivity {
 
         Picasso.get()
                 .load(imageUrl)
-                .resize(1500, 2200)
                 .placeholder(R.mipmap.ic_launcher)
                 .into(imageview);
         Picasso.get()
                 .load(imageUrl1)
-                .resize(1500, 2200)
                 .placeholder(R.mipmap.ic_launcher)
                 .into(imageview1);
     }
