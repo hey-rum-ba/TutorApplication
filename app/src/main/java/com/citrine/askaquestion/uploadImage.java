@@ -4,6 +4,7 @@ import static android.content.ContentValues.TAG;
 
 import android.content.ClipData;
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,7 +12,9 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PorterDuffXfermode;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.webkit.MimeTypeMap;
@@ -22,6 +25,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.Task;
@@ -36,6 +40,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,8 +58,6 @@ public class uploadImage extends AppCompatActivity {
     private int n;
     private Uri mImageUri;
     private Uri imageUri;
-    private Canvas canvas;
-    private Paint paint;
     private int inte;
     private StorageReference mStorageRef;
     private DatabaseReference mDatabaseRef;
@@ -104,75 +107,80 @@ public class uploadImage extends AppCompatActivity {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
-                && data != null && data.getData() != null) {
-            mImageUri = data.getData();
-
-            Picasso.get().load(mImageUri).into(mImageView);
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK) {
+            final List<Bitmap> bitmaps = new ArrayList<>();
+            ClipData clipData = data.getClipData();
+            if (clipData != null) {
+                Bitmap[] parts = new Bitmap[clipData.getItemCount()];
+                //multiple images selected
+                for (int i = 0; i < clipData.getItemCount(); i++) {
+                    Uri imageUri = clipData.getItemAt(i).getUri();
+                    Log.d("uri11", imageUri.toString());
+                    try {
+                        InputStream inputStream = getContentResolver().openInputStream(imageUri);
+                        Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                        bitmaps.add(bitmap);
+                        parts[i] = bitmap;
+                        Log.d(TAG, "parts " + parts[i]);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    mImageView.setImageBitmap(mergeMultiple(parts));
+                }
+            }
+            else{
+                    mImageUri = data.getData();
+                    Log.d(TAG, "image uri " + mImageUri);
+                    Picasso.get().load(mImageUri).into(mImageView);
+                }
+            }
         }
-
-
-//        if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK){
-//            final ImageView imageView = findViewById(R.id.image_view);
-//            final List<Bitmap> bitmaps = new ArrayList<>();
-//            ClipData clipData = data.getClipData();
-//            Bitmap[] parts = new Bitmap[clipData.getItemCount()];
-//            if (clipData != null) {
-//                for (int i = 0; i < clipData.getItemCount(); i++) {
-//                    Uri imageUri = clipData.getItemAt(i).getUri();
-//                    mImageUri = imageUri;
-//                    Log.d("URI", imageUri.toString());
-//                    try {
-//                        InputStream inputStream = getContentResolver().openInputStream(imageUri);
-//                        parts[i] = BitmapFactory.decodeStream(inputStream);
-//                        Log.d("URI in here ", parts[i].toString());
-//                    } catch (FileNotFoundException e) {
-//                        e.printStackTrace();
-//                    }
-//                    Bitmap result = Bitmap.createBitmap(parts[0].getWidth(), parts[0].getHeight()* clipData.getItemCount(), Bitmap.Config.ARGB_8888);
-//                    Log.d(TAG, "uri in canvas "+ result.getHeight()+" "+result.getWidth());
-//                    canvas = new Canvas(result);
-//                    canvas.setBitmap(result);
-//                    paint = new Paint();
-//                    for (int j = 0; j < clipData.getItemCount(); j++) {
-//
-//                        canvas.drawBitmap(parts[j], parts[j].getWidth() , parts[j].getHeight() * j, paint);
-//                        Log.d(TAG, "uri in canvas "+ parts[j].getHeight()+" "+parts[j].getWidth());
-//                    }
-//                    imageView.setImageBitmap(result);
-//                }
-//
-//            } else {
-//                //single image selected
-//                imageUri = data.getData();
-//                mImageUri = imageUri;
-//                Log.d("URI", imageUri.toString());
-//                try {
-//                    InputStream inputStream = getContentResolver().openInputStream(imageUri);
-//                    Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-//                    bitmaps.add(bitmap);
-//                    imageView.setImageBitmap(bitmap);
-//                } catch (FileNotFoundException e) {
-//                    e.printStackTrace();
-//                }
-//
-//            }
-//            new Thread(() -> {
-//                for (final Bitmap b : bitmaps) {
-//                    runOnUiThread(() -> imageView.setImageBitmap(b));
-//                    try {
-//                        Thread.sleep(2000);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            }).start();
-
+    @RequiresApi(api = Build.VERSION_CODES.Q)
+    private Bitmap mergeMultiple(Bitmap[] parts) {
+        Log.d(TAG, "parts3 " + parts.length);
+        Bitmap result = Bitmap.createBitmap(parts[0].getWidth() , parts[0].getHeight() * parts.length, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(result);
+        Paint paint = new Paint();
+        for (int i = 0; i < parts.length; i++) {
+            if (parts[i] != null) {
+                canvas.drawBitmap(parts[i],0, parts[i].getHeight() * (i), paint);
+            }
+            Log.d(TAG, "uri1 "+ result);
         }
+        OutputStream imageOutStream = null;
+
+        ContentValues cv = new ContentValues();
+
+        // name of the file
+        cv.put(MediaStore.Images.Media.DISPLAY_NAME, "drawing.png");
+
+        // type of the file
+        cv.put(MediaStore.Images.Media.MIME_TYPE, "image/png");
+
+        // location of the file to be saved
+        cv.put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES);
+
+        // get the Uri of the file which is to be created in the storage
+        Uri uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, cv);
+        try {
+            // open the output stream with the above uri
+            imageOutStream = getContentResolver().openOutputStream(uri);
+
+            // this method writes the files in storage
+            result.compress(Bitmap.CompressFormat.PNG, 100, imageOutStream);
+
+            // close the output stream after use
+            imageOutStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 
     private String getFileExtension(Uri uri) {
         ContentResolver cR = getContentResolver();
