@@ -39,7 +39,7 @@ import java.util.List;
 
 public class HomeFragment extends Fragment {
     private static final String TAG = "HomeFragment";
-    private RecyclerView mRecyclerView;
+
     private ImageAdapter mAdapter;
     private ProgressBar mProgressCircle;
     private DatabaseReference mDatabaseRef;
@@ -62,9 +62,6 @@ public class HomeFragment extends Fragment {
 
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-        mRecyclerView = binding.questionList;
-        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mUploads = new ArrayList<>();
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("uploadedUserDetails");
         mDatabaseRef1 = FirebaseDatabase.getInstance().getReference("uploadedUserDetails");
@@ -89,8 +86,6 @@ public class HomeFragment extends Fragment {
                     }
                 });
 
-                mAdapter = new ImageAdapter(getActivity(), mUploads,0);
-                mRecyclerView.setAdapter(mAdapter);
             }
 
             @Override

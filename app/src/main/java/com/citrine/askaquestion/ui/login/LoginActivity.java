@@ -61,7 +61,8 @@ public class LoginActivity extends AppCompatActivity {
         final ProgressBar loadingProgressBar = binding.loading;
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
-
+        if(user !=null){
+        Log.d(TAG, "current user" + user.getUid());}
         loginViewModel.getLoginFormState().observe(this, loginFormState -> {
             if (loginFormState == null) {
                 return;
@@ -119,6 +120,10 @@ public class LoginActivity extends AppCompatActivity {
             return false;
         });
         loginButton.setOnClickListener(v -> {
+            auth = FirebaseAuth.getInstance();
+            user = auth.getCurrentUser();
+            if(user !=null){
+                Log.d(TAG, "current user is nw " + user.getUid());}
             loadingProgressBar.setVisibility(View.VISIBLE);
             loginViewModel.login(usernameEditText.getText().toString(),
                     passwordEditText.getText().toString());

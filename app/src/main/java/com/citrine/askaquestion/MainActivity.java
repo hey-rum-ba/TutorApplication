@@ -150,9 +150,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void logOut(MenuItem item){
-        FirebaseAuth.getInstance().signOut();
         Toast.makeText(MainActivity.this, "Logging Out", Toast.LENGTH_SHORT).show();
         startActivity(new Intent(MainActivity.this,LoginActivity.class));
+        FirebaseAuth.getInstance().signOut();
     }
 
 

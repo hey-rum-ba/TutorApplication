@@ -82,7 +82,6 @@ public class uploadImage extends AppCompatActivity {
 
         mStorageRef = FirebaseStorage.getInstance().getReference("uploads for student");
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("uploads for students");
-        mDatabaseRef1 = FirebaseDatabase.getInstance().getReference("uploaded solution");
         mButtonChooseImage.setOnClickListener(v -> openFileChooser());
         inte =getIntent().getIntExtra("teacherUploading",0);
         emailAddress=getIntent().getStringExtra("emailAddress");
@@ -115,7 +114,6 @@ public class uploadImage extends AppCompatActivity {
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -148,7 +146,7 @@ public class uploadImage extends AppCompatActivity {
                 }
             }
         }
-    @RequiresApi(api = Build.VERSION_CODES.Q)
+
     private Bitmap mergeMultiple(Bitmap[] parts) {
         Log.d(TAG, "parts3 " + parts.length);
         Bitmap result = Bitmap.createBitmap(parts[0].getWidth() , parts[0].getHeight() * parts.length, Bitmap.Config.ARGB_8888);
@@ -171,7 +169,9 @@ public class uploadImage extends AppCompatActivity {
         cv.put(MediaStore.Images.Media.MIME_TYPE, "image/png");
 
         // location of the file to be saved
-        cv.put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            cv.put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES);
+        }
 
         // get the Uri of the file which is to be created in the storage
         Uri uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, cv);
@@ -232,7 +232,7 @@ public class uploadImage extends AppCompatActivity {
         }
 
         else {
-            Toast.makeText(this, "No file selected", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please give a description", Toast.LENGTH_SHORT).show();
         }
     }
     else
@@ -267,7 +267,7 @@ public class uploadImage extends AppCompatActivity {
             mDatabaseRef.child(uploadId).setValue(upload);
         }
         else {
-            Toast.makeText(this, "No file selected", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please give a description", Toast.LENGTH_SHORT).show();
         }
     }
     }

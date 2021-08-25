@@ -26,12 +26,12 @@ public class completeSolution extends AppCompatActivity {
         setContentView(R.layout.show_solved);
         imageview = findViewById(R.id.solutionShow);
         textView = findViewById(R.id.solutionDescription);
-        imageview1 =findViewById(R.id.solvedShow);
-        textView1= findViewById(R.id.solutionDesc);
-        String name= getIntent().getStringExtra("Name");
-        String name1= getIntent().getStringExtra("Name1");
-        String imageUrl=getIntent().getStringExtra("image");
-        String imageUrl1=getIntent().getStringExtra("image1");
+        imageview1 = findViewById(R.id.solvedShow);
+        textView1 = findViewById(R.id.solutionDesc);
+        String name = getIntent().getStringExtra("Name");
+        String name1 = getIntent().getStringExtra("Name1");
+        String imageUrl = getIntent().getStringExtra("image");
+        String imageUrl1 = getIntent().getStringExtra("image1");
         textView.setText(name);
         textView1.setText(name1);
 
