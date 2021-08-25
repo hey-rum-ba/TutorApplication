@@ -2,10 +2,16 @@ package com.citrine.askaquestion;
 
 import static android.content.ContentValues.TAG;
 
+import android.Manifest;
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -25,8 +31,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
@@ -82,7 +91,8 @@ public class uploadImage extends AppCompatActivity {
 
         mStorageRef = FirebaseStorage.getInstance().getReference("uploads for student");
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("uploads for students");
-        mButtonChooseImage.setOnClickListener(v -> openFileChooser());
+        if (checkPermissionREAD_EXTERNAL_STORAGE(this)) {
+        mButtonChooseImage.setOnClickListener(v -> openFileChooser());}
         inte =getIntent().getIntExtra("teacherUploading",0);
         emailAddress=getIntent().getStringExtra("emailAddress");
         Log.d(TAG, "email ye he"+emailAddress);
@@ -97,12 +107,28 @@ public class uploadImage extends AppCompatActivity {
                         "once the upper progress bar is filled", Toast.LENGTH_SHORT).show();
             }
         });
-        mJoinImage.setOnClickListener(v-> openFileChooser());
+        if (checkPermissionREAD_EXTERNAL_STORAGE(this)) {
+            mJoinImage.setOnClickListener(v-> openFileChooser());
+        }
         mTextViewShowUploads.setOnClickListener(v -> openImagesActivity());
     }
 
-    private void combineImagesActivity() {
-
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case PICK_IMAGE_REQUEST:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // do your stuff
+                } else {
+                    Toast.makeText(this, "GET_ACCOUNTS Denied",
+                            Toast.LENGTH_SHORT).show();
+                }
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions,
+                        grantResults);
+        }
     }
 
     private void openFileChooser() {
@@ -147,6 +173,53 @@ public class uploadImage extends AppCompatActivity {
             }
         }
 
+    public boolean checkPermissionREAD_EXTERNAL_STORAGE(
+            final Context context) {
+        int currentAPIVersion = Build.VERSION.SDK_INT;
+        if (currentAPIVersion >= android.os.Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(context,
+                    Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(
+                        (Activity) context,
+                        Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                    showDialog("External storage", context,Manifest.permission.READ_EXTERNAL_STORAGE);
+
+                } else {
+                    ActivityCompat
+                            .requestPermissions(
+                                    (Activity) context,
+                                    new String[] { Manifest.permission.READ_EXTERNAL_STORAGE },
+                                    PICK_IMAGE_REQUEST);
+                }
+                return false;
+            } else {
+                return true;
+            }
+
+        } else {
+            return true;
+        }
+    }
+
+    public void showDialog(final String msg, final Context context,
+                           final String permission) {
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
+        alertBuilder.setCancelable(true);
+        alertBuilder.setTitle("Permission necessary");
+        alertBuilder.setMessage(msg + " permission is necessary");
+        alertBuilder.setPositiveButton(android.R.string.yes,
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        ActivityCompat.requestPermissions((Activity) context,
+                                new String[] { permission },
+                                PICK_IMAGE_REQUEST);
+                    }
+                });
+        AlertDialog alert = alertBuilder.create();
+        alert.show();
+    }
+
+
     private Bitmap mergeMultiple(Bitmap[] parts) {
         Log.d(TAG, "parts3 " + parts.length);
         Bitmap result = Bitmap.createBitmap(parts[0].getWidth() , parts[0].getHeight() * parts.length, Bitmap.Config.ARGB_8888);
@@ -169,6 +242,7 @@ public class uploadImage extends AppCompatActivity {
         cv.put(MediaStore.Images.Media.MIME_TYPE, "image/png");
 
         // location of the file to be saved
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             cv.put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES);
         }
@@ -213,7 +287,7 @@ public class uploadImage extends AppCompatActivity {
                         String name= getIntent().getStringExtra("imageDesc");
                         String emailAddress= getIntent().getStringExtra("emailAddress");
                         Upload upload = new Upload(emailAddress,name,url,mEditTextFileName.getText().toString().trim(),downloadUrl.toString());
-                        String uploadId = mDatabaseRef1.push().getKey();
+                        String uploadId = mDatabaseRef.push().getKey();
                         mDatabaseRef.child(uploadId).setValue(upload);
                     })
                     .addOnFailureListener(e -> Toast.makeText(uploadImage.this, e.getMessage(), Toast.LENGTH_SHORT).show())
@@ -227,7 +301,7 @@ public class uploadImage extends AppCompatActivity {
             String name= getIntent().getStringExtra("imageDesc");
             String emailAddress= getIntent().getStringExtra("emailAddress");
             Upload upload = new Upload(emailAddress,name,url,mEditTextFileName.getText().toString().trim(),null);
-            String uploadId = mDatabaseRef1.push().getKey();
+            String uploadId = mDatabaseRef.push().getKey();
             mDatabaseRef.child(uploadId).setValue(upload);
         }
 
@@ -263,7 +337,7 @@ public class uploadImage extends AppCompatActivity {
             String emailAddress= getIntent().getStringExtra("emailAddress");
             Log.d(TAG, "student email"+emailAddress);
             Upload upload = new Upload(emailAddress,mEditTextFileName.getText().toString().trim(),null,null,null);
-            String uploadId = mDatabaseRef1.push().getKey();
+            String uploadId = mDatabaseRef.push().getKey();
             mDatabaseRef.child(uploadId).setValue(upload);
         }
         else {
