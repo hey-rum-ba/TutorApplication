@@ -53,7 +53,6 @@ public class showPreviousQuestion extends AppCompatActivity {
                 mTextField.setOnClickListener(null);
                 solve.setEnabled(false);
             }
-
         };
         countDownTimer.start();
         solve.setOnClickListener(v ->
