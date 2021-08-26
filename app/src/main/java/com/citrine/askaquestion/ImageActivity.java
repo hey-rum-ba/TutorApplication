@@ -68,7 +68,10 @@ public class ImageActivity extends AppCompatActivity {
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                         Upload upload = postSnapshot.getValue(Upload.class);
-                        mUploads.add(upload);
+                        Upload upload1 = new Upload();
+                        if(upload.getName1() == null) {
+                            upload1=upload;
+                        mUploads.add(upload1);}
                         Collections.reverse(mUploads);
                     }
                     int i =getIntent().getIntExtra("teacherAccountIsActive",0);
