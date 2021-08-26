@@ -12,8 +12,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.net.URISyntaxException;
@@ -67,6 +73,19 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
                 intent.putExtra("Name1",uploadCurrent.getName1());
             }
         else {
+                DatabaseReference dbref= FirebaseDatabase.getInstance().getReference("uploads for students");
+
+                dbref.orderByChild("imageUrl").equalTo(uploadCurrent.getImageUrl()).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        dbref.removeValue();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
                 intent = new Intent(mContext, showPreviousQuestion.class);
                 intent.putExtra("emailAddresses",uploadCurrent.getEmail());
                 intent.putExtra("image", uploadCurrent.getImageUrl());

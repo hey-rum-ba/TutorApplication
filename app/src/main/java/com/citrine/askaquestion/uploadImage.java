@@ -56,6 +56,7 @@ import java.util.List;
 public class uploadImage extends AppCompatActivity {
 
     private static final int PICK_IMAGE_REQUEST =1;
+    public static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123;
 
     private Button mButtonChooseImage;
     private Button mButtonUpload;
@@ -107,29 +108,13 @@ public class uploadImage extends AppCompatActivity {
                         "once the upper progress bar is filled", Toast.LENGTH_SHORT).show();
             }
         });
+
         if (checkPermissionREAD_EXTERNAL_STORAGE(this)) {
             mJoinImage.setOnClickListener(v-> openFileChooser());
         }
         mTextViewShowUploads.setOnClickListener(v -> openImagesActivity());
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case PICK_IMAGE_REQUEST:
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // do your stuff
-                } else {
-                    Toast.makeText(this, "GET_ACCOUNTS Denied",
-                            Toast.LENGTH_SHORT).show();
-                }
-                break;
-            default:
-                super.onRequestPermissionsResult(requestCode, permissions,
-                        grantResults);
-        }
-    }
 
     private void openFileChooser() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -173,8 +158,10 @@ public class uploadImage extends AppCompatActivity {
             }
         }
 
+
+
     public boolean checkPermissionREAD_EXTERNAL_STORAGE(
-            final Context context) {
+             Context context) {
         int currentAPIVersion = Build.VERSION.SDK_INT;
         if (currentAPIVersion >= android.os.Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(context,
@@ -182,16 +169,17 @@ public class uploadImage extends AppCompatActivity {
                 if (ActivityCompat.shouldShowRequestPermissionRationale(
                         (Activity) context,
                         Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                    showDialog("External storage", context,Manifest.permission.READ_EXTERNAL_STORAGE);
+                    showDialog("External storage", context,
+                            Manifest.permission.READ_EXTERNAL_STORAGE);
 
                 } else {
                     ActivityCompat
                             .requestPermissions(
                                     (Activity) context,
                                     new String[] { Manifest.permission.READ_EXTERNAL_STORAGE },
-                                    PICK_IMAGE_REQUEST);
+                                    MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
                 }
-                return false;
+                return true;
             } else {
                 return true;
             }
@@ -208,17 +196,26 @@ public class uploadImage extends AppCompatActivity {
         alertBuilder.setTitle("Permission necessary");
         alertBuilder.setMessage(msg + " permission is necessary");
         alertBuilder.setPositiveButton(android.R.string.yes,
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        ActivityCompat.requestPermissions((Activity) context,
-                                new String[] { permission },
-                                PICK_IMAGE_REQUEST);
-                    }
-                });
+                (dialog, which) -> ActivityCompat.requestPermissions((Activity) context,
+                        new String[] { permission },
+                        MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE));
         AlertDialog alert = alertBuilder.create();
         alert.show();
     }
-
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE:
+                if (grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this, "GET_ACCOUNTS Granted",
+                            Toast.LENGTH_SHORT).show();
+                    return;}
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions,
+                        grantResults);
+        }
+    }
 
     private Bitmap mergeMultiple(Bitmap[] parts) {
         Log.d(TAG, "parts3 " + parts.length);
