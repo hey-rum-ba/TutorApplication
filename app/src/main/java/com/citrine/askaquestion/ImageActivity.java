@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -86,5 +87,10 @@ public class ImageActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
     }
 }

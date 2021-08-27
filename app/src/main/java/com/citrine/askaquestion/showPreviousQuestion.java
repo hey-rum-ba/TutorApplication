@@ -89,6 +89,30 @@ public class showPreviousQuestion extends AppCompatActivity {
                 intent.putExtra("imageURL",imageUrl);
                 intent.putExtra("imageDesc",name);
                 startActivity(intent);
+                DatabaseReference dbRef= FirebaseDatabase.getInstance().getReference("uploads for students");
+                String image = getIntent().getStringExtra("image");
+                dbRef.orderByChild("imageUrl").equalTo(image).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for(DataSnapshot childSnapshot :snapshot.getChildren()){
+                            if(!childSnapshot.hasChild("imageUrl1")) {
+
+                                String randomNodeKey = childSnapshot.getKey();
+                                dbRef.child(randomNodeKey).removeValue();
+                                break;
+                            }
+                            else {String randomNodeKey = childSnapshot.getKey();
+                                Log.d(TAG, "in db: "+randomNodeKey);
+                                Log.d(TAG, "onDataChange: new "+ childSnapshot.child("name1"));
+//                                dbRef.child(randomNodeKey).removeValue();
+                                }
+                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
                 finish();
             }
 
@@ -100,7 +124,6 @@ public class showPreviousQuestion extends AppCompatActivity {
                 .placeholder(R.mipmap.ic_launcher)
                 .into(imageview);
         skip.setOnClickListener(v -> {
-
             DatabaseReference solving= FirebaseDatabase.getInstance().getReference("IsCurrentlySolving");
             String image = getIntent().getStringExtra("image");
             String name1 = getIntent().getStringExtra("Name");
@@ -109,7 +132,6 @@ public class showPreviousQuestion extends AppCompatActivity {
 //            Log.d(TAG, "Image URL here "+image);
             DatabaseReference dbRef= FirebaseDatabase.getInstance().getReference("uploads for students");
             Log.d(TAG, "we here before db");
-            String uniqueKey= dbRef.push().getKey();
 
             solving.orderByChild("imageUrl").equalTo(image).addValueEventListener(new ValueEventListener() {
                 @Override
