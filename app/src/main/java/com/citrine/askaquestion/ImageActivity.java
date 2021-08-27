@@ -69,7 +69,7 @@ public class ImageActivity extends AppCompatActivity {
                     for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                         Upload upload = postSnapshot.getValue(Upload.class);
                         Upload upload1 = new Upload();
-                        if(upload.getName1() == null) {
+                        if(upload.getName1() == null || upload.getName1().equals("Not solved yet, attempted")) {
                             upload1=upload;
                         mUploads.add(upload1);}
                         Collections.reverse(mUploads);

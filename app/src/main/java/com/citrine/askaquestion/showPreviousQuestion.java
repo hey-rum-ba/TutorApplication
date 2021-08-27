@@ -110,13 +110,14 @@ public class showPreviousQuestion extends AppCompatActivity {
             DatabaseReference dbRef= FirebaseDatabase.getInstance().getReference("uploads for students");
             Log.d(TAG, "we here before db");
             String uniqueKey= dbRef.push().getKey();
-            dbRef.child(uniqueKey).setValue(uploadCurrent);
+
             solving.orderByChild("imageUrl").equalTo(image).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     for(DataSnapshot childSnapshot :snapshot.getChildren()){
                         String randomNodeKey = childSnapshot.getKey();
-//                        solving.child(randomNodeKey).removeValue();
+                        solving.child(randomNodeKey).removeValue();
+                        dbRef.child(randomNodeKey).setValue(uploadCurrent);
                         break;
                     }
                 }

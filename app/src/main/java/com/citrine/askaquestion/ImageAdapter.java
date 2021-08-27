@@ -46,7 +46,9 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
 
     @Override
     public void onBindViewHolder(ImageViewHolder holder, int position) {
+        Log.d(TAG, "iidhar MI he" + mI);
         Upload uploadCurrent = mUploads.get(position);
+
         holder.textViewName.setText(uploadCurrent.getName());
         Picasso.get()
                 .load(uploadCurrent.getImageUrl())
@@ -57,8 +59,9 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
         if(uploadCurrent.getName1()==null || uploadCurrent.getName1().equals("Not solved yet, attempted"))holder.itemView.setBackgroundColor(Color.parseColor("#FFBB86FC"));
         else holder.itemView.setBackgroundColor(Color.parseColor("#FF018786"));
         holder.itemView.setOnClickListener(v->{
-            Intent intent;
-            if(uploadCurrent.getName1()==null || uploadCurrent.getName1().equals("Not solved yet, attempted") && mI==0){
+            Log.d(TAG, "iidhar Mi hi " + uploadCurrent.getName1());
+            Intent intent = null;
+            if((uploadCurrent.getName1()==null || uploadCurrent.getName1().equals("Not solved yet, attempted")) && mI==0){
             intent = new Intent(mContext, completeSolution.class);
             intent.putExtra("emailAddresses",uploadCurrent.getEmail());
             intent.putExtra("image",uploadCurrent.getImageUrl());
@@ -66,14 +69,16 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
             intent.putExtra("Name",uploadCurrent.getName());
             intent.putExtra("Name1","Question is yet to be solved by tutor");
             }
-            else if(uploadCurrent.getName1()!=null) {
+            else if((uploadCurrent.getName1()!=null && !uploadCurrent.getName1().equals("Not solved yet, attempted")) && mI==0) {
                 intent = new Intent(mContext, completeSolution.class);
                 intent.putExtra("emailAddresses",uploadCurrent.getEmail());
                 intent.putExtra("image",uploadCurrent.getImageUrl());
                 intent.putExtra("image1",uploadCurrent.getImageUrl1());
                 intent.putExtra("Name1",uploadCurrent.getName1());
+
             }
-        else {
+        else if((uploadCurrent.getName1()==null || uploadCurrent.getName1().equals("Not solved yet, attempted")) && mI==1){
+                Log.d(TAG, "onBindViewHolder me: "+uploadCurrent.getName1());
                 DatabaseReference dbRef= FirebaseDatabase.getInstance().getReference("uploads for students");
                 DatabaseReference solving= FirebaseDatabase.getInstance().getReference("IsCurrentlySolving");
                 dbRef.orderByChild("imageUrl").equalTo(uploadCurrent.getImageUrl()).addValueEventListener(new ValueEventListener() {
