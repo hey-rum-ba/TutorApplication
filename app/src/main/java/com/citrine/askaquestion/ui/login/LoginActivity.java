@@ -176,15 +176,16 @@ public class LoginActivity extends AppCompatActivity {
                 Intent intent=new Intent(LoginActivity.this, MainActivity.class);
                 String bool= String.valueOf(upload.isTeacher());
                 intent.putExtra("bool",bool);
+                String welcome;
                 if(upload.username!=null){
-                String welcome = getString(R.string.welcome) +upload.getUsername()+"' !!! ";
+                    welcome = getString(R.string.welcome) + upload.getUsername() + "' !!! ";
                 // TODO : initiate successful logged in experience
-                Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();}
-                else {
-                    String welcome = "Invalid Credentials";
-                    // TODO : initiate successful logged in experience
-                    Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
                 }
+                else {
+                    welcome = "Invalid Credentials";
+                    // TODO : initiate successful logged in experience
+                }
+                Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
             }
 
             @Override

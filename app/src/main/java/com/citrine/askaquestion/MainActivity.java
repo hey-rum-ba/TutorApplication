@@ -74,7 +74,6 @@ public class MainActivity extends AppCompatActivity {
         try{
         Intent intent = getIntent();
         String emailAddress = intent.getStringExtra("emailAddress");
-//        Log.d(TAG, "here is email " + emailAddress);
         if (emailAddress != null)
         {
             databaseReference.orderByChild("email").equalTo(emailAddress).addChildEventListener(new ChildEventListener() {

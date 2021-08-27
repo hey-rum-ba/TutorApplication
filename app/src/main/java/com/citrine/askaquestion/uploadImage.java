@@ -218,7 +218,7 @@ public class uploadImage extends AppCompatActivity {
     }
 
     private Bitmap mergeMultiple(Bitmap[] parts) {
-        Log.d(TAG, "parts3 " + parts.length);
+//        Log.d(TAG, "parts3 " + parts.length);
         Bitmap result = Bitmap.createBitmap(parts[0].getWidth() , parts[0].getHeight() * parts.length, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(result);
         Paint paint = new Paint();
@@ -226,7 +226,7 @@ public class uploadImage extends AppCompatActivity {
             if (parts[i] != null) {
                 canvas.drawBitmap(parts[i],0, parts[i].getHeight() * (i), paint);
             }
-            Log.d(TAG, "uri1 "+ result);
+//            Log.d(TAG, "uri1 "+ result);
         }
         OutputStream imageOutStream = null;
 

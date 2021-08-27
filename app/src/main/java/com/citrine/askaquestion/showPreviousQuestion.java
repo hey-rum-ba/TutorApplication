@@ -1,17 +1,26 @@
 package com.citrine.askaquestion;
 
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 public class showPreviousQuestion extends AppCompatActivity {
@@ -91,13 +100,39 @@ public class showPreviousQuestion extends AppCompatActivity {
                 .placeholder(R.mipmap.ic_launcher)
                 .into(imageview);
         skip.setOnClickListener(v -> {
-//            Intent intent = new Intent(showPreviousQuestion.this, ImageActivity.class);
+
+            DatabaseReference solving= FirebaseDatabase.getInstance().getReference("IsCurrentlySolving");
+            String image = getIntent().getStringExtra("image");
+            String name1 = getIntent().getStringExtra("Name");
+            String emailaddress=getIntent().getStringExtra("emailAddresses");
+            Upload uploadCurrent =new Upload(emailaddress,name1,image,"Not solved yet, attempted",null);
+//            Log.d(TAG, "Image URL here "+image);
+            DatabaseReference dbRef= FirebaseDatabase.getInstance().getReference("uploads for students");
+            Log.d(TAG, "we here before db");
+            String uniqueKey= dbRef.push().getKey();
+            dbRef.child(uniqueKey).setValue(uploadCurrent);
+            solving.orderByChild("imageUrl").equalTo(image).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for(DataSnapshot childSnapshot :snapshot.getChildren()){
+                        String randomNodeKey = childSnapshot.getKey();
+//                        solving.child(randomNodeKey).removeValue();
+                        break;
+                    }
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+//            Intent intent = new Intent(showPreviousQuestion.this, MainActivity.class);
 //            intent.putExtra("teacherAccountIsActive",1);
-//            intent.putExtra("emailAddresses",emailAddress);
+//            intent.putExtra("emailAddress",emailAddress);
 //            intent.putExtra("imageURL",imageUrl);
 //            intent.putExtra("imageDesc",name);
 //            startActivity(intent);
             finish();
         });
+
     }
 }

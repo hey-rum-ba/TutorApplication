@@ -5,6 +5,7 @@ import static android.content.ContentValues.TAG;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,11 +54,11 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
                 .fit()
                 .centerCrop()
                 .into(holder.imageView);
-        if(uploadCurrent.getName1()==null)holder.itemView.setBackgroundColor(Color.parseColor("#FFBB86FC"));
+        if(uploadCurrent.getName1()==null || uploadCurrent.getName1().equals("Not solved yet, attempted"))holder.itemView.setBackgroundColor(Color.parseColor("#FFBB86FC"));
         else holder.itemView.setBackgroundColor(Color.parseColor("#FF018786"));
         holder.itemView.setOnClickListener(v->{
             Intent intent;
-            if(uploadCurrent.getName1()==null && mI==0){
+            if(uploadCurrent.getName1()==null || uploadCurrent.getName1().equals("Not solved yet, attempted") && mI==0){
             intent = new Intent(mContext, completeSolution.class);
             intent.putExtra("emailAddresses",uploadCurrent.getEmail());
             intent.putExtra("image",uploadCurrent.getImageUrl());
@@ -73,12 +74,20 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
                 intent.putExtra("Name1",uploadCurrent.getName1());
             }
         else {
-                DatabaseReference dbref= FirebaseDatabase.getInstance().getReference("uploads for students");
-
-                dbref.orderByChild("imageUrl").equalTo(uploadCurrent.getImageUrl()).addValueEventListener(new ValueEventListener() {
+                DatabaseReference dbRef= FirebaseDatabase.getInstance().getReference("uploads for students");
+                DatabaseReference solving= FirebaseDatabase.getInstance().getReference("IsCurrentlySolving");
+                dbRef.orderByChild("imageUrl").equalTo(uploadCurrent.getImageUrl()).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        dbref.removeValue();
+                        String randomKey=" ";
+                        for(DataSnapshot childSnapshot : snapshot.getChildren()){
+                            if(!childSnapshot.hasChild("name1"))
+                            {randomKey = childSnapshot.getKey();
+                                solving.child(randomKey).setValue(uploadCurrent);
+                                dbRef.child(randomKey).removeValue();
+                            }
+                        }
+
                     }
 
                     @Override
@@ -97,8 +106,8 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
                 }
 
             mContext.startActivity(intent);
-        });
-
+        }
+        );
 
     }
 
