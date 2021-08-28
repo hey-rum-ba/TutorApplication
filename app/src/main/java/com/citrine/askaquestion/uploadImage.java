@@ -23,10 +23,13 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -78,9 +81,19 @@ public class uploadImage extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d(TAG, "we are here now boi");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.imagepicker);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("For uploading multiple images, you have to join the images first, then choose the single merged image.");
+        builder.setPositiveButton("Got it", (dialog, id) -> {
+            // User clicked OK button
+        });
+        builder.setNegativeButton("Cancel", (dialog, id) -> {
+            // User cancelled the dialog
+        });
+        builder.create().show();
+
         n=getIntent().getIntExtra("setting",0);
         mButtonChooseImage = findViewById(R.id.button_choose_image);
         mButtonUpload = findViewById(R.id.button_upload);
@@ -113,6 +126,7 @@ public class uploadImage extends AppCompatActivity {
             mJoinImage.setOnClickListener(v-> openFileChooser());
         }
         mTextViewShowUploads.setOnClickListener(v -> openImagesActivity());
+
     }
 
 

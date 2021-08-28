@@ -148,12 +148,12 @@ public class showPreviousQuestion extends AppCompatActivity {
 
                 }
             });
-//            Intent intent = new Intent(showPreviousQuestion.this, MainActivity.class);
-//            intent.putExtra("teacherAccountIsActive",1);
-//            intent.putExtra("emailAddress",emailAddress);
-//            intent.putExtra("imageURL",imageUrl);
-//            intent.putExtra("imageDesc",name);
-//            startActivity(intent);
+           Intent intent = new Intent(showPreviousQuestion.this, ImageActivity.class);
+            intent.putExtra("teacherAccountIsActive",1);
+            intent.putExtra("emailAddress",emailAddress);
+            intent.putExtra("imageURL",imageUrl);
+            intent.putExtra("imageDesc",name);
+            startActivity(intent);
             finish();
         });
 

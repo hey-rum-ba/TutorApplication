@@ -2,6 +2,7 @@ package com.citrine.askaquestion;
 
 import static android.content.ContentValues.TAG;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -109,11 +110,10 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
             else {
                     intent.putExtra("Name",uploadCurrent.getName());
                 }
-
             mContext.startActivity(intent);
+            ((Activity)mContext).finish();
         }
         );
-
     }
 
     @Override

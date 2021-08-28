@@ -8,7 +8,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.StringRes;
@@ -30,6 +32,7 @@ import com.citrine.askaquestion.SignUpActivity;
 import com.citrine.askaquestion.UploadToFireBase;
 import com.citrine.askaquestion.uploadImage;
 import com.citrine.askaquestion.databinding.ActivityLoginBinding;
+import com.google.api.Backend;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -44,25 +47,26 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseUser user;
     private FirebaseAuth auth;
     private String emailAddress;
+    private EditText usernameEditText;
+    private EditText passwordEditText;
     DatabaseReference databaseReference=firebaseDatabase.getReference("uploadedUserDetail");
+    FirebaseAuth.AuthStateListener listener;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        com.citrine.askaquestion.databinding.ActivityLoginBinding binding = ActivityLoginBinding.inflate(getLayoutInflater());
+        ActivityLoginBinding binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         loginViewModel = new ViewModelProvider(this, new LoginViewModelFactory())
                 .get(LoginViewModel.class);
 
-        final EditText usernameEditText = binding.username;
-        final EditText passwordEditText = binding.password;
+        usernameEditText = binding.username;
+        passwordEditText = binding.password;
         final Button loginButton = binding.login;
         final ProgressBar loadingProgressBar = binding.loading;
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
-        if(user !=null){
-        Log.d(TAG, "current user" + user.getUid());}
         loginViewModel.getLoginFormState().observe(this, loginFormState -> {
             if (loginFormState == null) {
                 return;
@@ -90,7 +94,6 @@ public class LoginActivity extends AppCompatActivity {
             setResult(Activity.RESULT_OK);
 
             //Complete and destroy login activity once successful
-            finish();
         });
 
         TextWatcher afterTextChangedListener = new TextWatcher() {
@@ -133,7 +136,14 @@ public class LoginActivity extends AppCompatActivity {
             intent.putExtra("emailAddress",emailAddress);
             intent1.putExtra("emailAddress",emailAddress);
             Log.d(TAG, "sending email " +emailAddress);
+            listener= firebaseAuth -> {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    Log.d(TAG, "onAuthStateChanged: changing here the auth state");
+                }
+            };
             startActivity(intent);
+
             databaseReference.orderByChild("email").equalTo(emailAddress).addChildEventListener(new ChildEventListener() {
                 @Override
                 public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
@@ -165,6 +175,45 @@ public class LoginActivity extends AppCompatActivity {
             });
            getData();
         });
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Fetching the stored data
+        // from the SharedPreference
+        SharedPreferences sh = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+
+        String s1 = sh.getString("name", "");
+        String a = sh.getString("age", "");
+
+        // Setting the fetched data
+        // in the EditTexts
+        usernameEditText.setText(s1);
+        passwordEditText.setText(a);
+    }
+
+    // Store the data in the SharedPreference
+    // in the onPause() method
+    // When the user closes the application
+    // onPause() will be called
+    // and data will be stored
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        // Creating a shared pref object
+        // with a file name "MySharedPref"
+        // in private mode
+        SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+        SharedPreferences.Editor myEdit = sharedPreferences.edit();
+
+        // write all the data entered by the user in SharedPreference and apply
+        myEdit.putString("name", usernameEditText.getText().toString());
+        myEdit.putString("age", passwordEditText.getText().toString());
+        myEdit.apply();
     }
 
     private void updateUiWithUser(LoggedInUserView model) {
@@ -251,4 +300,5 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent =new Intent(LoginActivity.this, SignUpActivity.class);
         startActivity(intent);
     }
+
 }

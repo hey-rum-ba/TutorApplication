@@ -2,6 +2,7 @@ package com.citrine.askaquestion;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,13 +11,17 @@ import android.view.Menu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.citrine.askaquestion.data.LoginRepository;
 import com.citrine.askaquestion.databinding.ActivityMainBinding;
 import com.citrine.askaquestion.ui.login.LoginActivity;
 import com.citrine.askaquestion.ui.slideshow.SlideshowViewModel;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -34,7 +39,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements FirebaseAuth.AuthStateListener{
     private static final String TAG = "MainActivity";
 
     private TextView mDisplayDate;
@@ -44,8 +49,10 @@ public class MainActivity extends AppCompatActivity {
     private TextView mPreview;
     private SlideshowViewModel slideshowViewModel;
     private FirebaseAuth auth;
+    private FirebaseAuth mAuth;
     private FirebaseUser user;
     private FirebaseDatabase database;
+    FirebaseAuth.AuthStateListener listener;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -53,10 +60,11 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setSupportActionBar(binding.appBarMain.toolbar);
-
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
         database = FirebaseDatabase.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+
         DatabaseReference databaseReference = database.getReference("uploadedUserDetail");
 
         DrawerLayout drawer = binding.drawerLayout;
@@ -71,64 +79,11 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-        try{
-        Intent intent = getIntent();
-        String emailAddress = intent.getStringExtra("emailAddress");
-        if (emailAddress != null)
-        {
-            databaseReference.orderByChild("email").equalTo(emailAddress).addChildEventListener(new ChildEventListener() {
-                @Override
-                public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                    UploadToFireBase upload = snapshot.getValue(UploadToFireBase.class);
 
-                    if (upload.isTeacher()) {
-//                        Toast.makeText(MainActivity.this, "This is a teacher account", Toast.LENGTH_SHORT).show();
-                        binding.appBarMain.settingText.setText("Click on the button for answering a new question");
-                        binding.appBarMain.fab.setOnClickListener(v -> {
-                            Intent intent1=new Intent(MainActivity.this, ImageActivity.class);
-                            intent1.putExtra("teacherAccountIsActive",1);
-                            startActivity(intent1);
-                        });
-                    } else {
-//                        Toast.makeText(MainActivity.this, "This is a student account", Toast.LENGTH_SHORT).show();
-                        binding.appBarMain.settingText.setText("Click on the button for asking a new question");
-                        binding.appBarMain.fab.setOnClickListener(v -> {
-                            Intent intent1=new Intent(MainActivity.this, uploadImage.class);
-                            intent1.putExtra("setting",1);
-                            intent1.putExtra("emailAddress",emailAddress);
-                            startActivity(intent1);
-                        });
-                    }
-                }
+        FirebaseUser users = FirebaseAuth.getInstance().getCurrentUser();
+        if (users != null) {}
 
-                @Override
-                public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-                }
-
-                @Override
-                public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
-                }
-
-                @Override
-                public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
-        }
-       else Toast.makeText(this, "Please Login to Access", Toast.LENGTH_LONG).show();} catch (Exception e) {
-            binding.appBarMain.settingText.setText("Please Login to enable QnA button");
-            e.printStackTrace();
-        }
     }
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -156,5 +111,88 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseAuth.getInstance().addAuthStateListener(this);
+    }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        FirebaseAuth.getInstance().removeAuthStateListener(this);
+    }
+
+    @Override
+    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+
+        if(firebaseAuth.getCurrentUser()==null){
+            Toast.makeText(MainActivity.this, "Please Login to Access", Toast.LENGTH_LONG).show();
+           return;
+        }
+        firebaseAuth.getCurrentUser().getIdToken(true)
+                .addOnSuccessListener(new OnSuccessListener<GetTokenResult>() {
+                    @Override
+                    public void onSuccess(GetTokenResult getTokenResult) {
+                        {
+//                            Log.d(TAG, "here the user is "+firebaseAuth.getUid());
+//                            Log.d(TAG, "here the user is "+firebaseAuth.getCurrentUser().getEmail());
+                            DatabaseReference databaseReference = database.getReference("uploadedUserDetail");
+                            Intent intent = getIntent();
+//                            String emailAddress = intent.getStringExtra("emailAddress");
+                            String emailAddress = firebaseAuth.getCurrentUser().getEmail();
+                            if (emailAddress != null)
+                            {
+                                databaseReference.orderByChild("email").equalTo(emailAddress).addChildEventListener(new ChildEventListener() {
+                                    @Override
+                                    public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                                        UploadToFireBase upload = snapshot.getValue(UploadToFireBase.class);
+
+                                        if (upload.isTeacher()) {
+//                        Toast.makeText(MainActivity.this, "This is a teacher account", Toast.LENGTH_SHORT).show();
+                                            binding.appBarMain.settingText.setText("Click on the button for answering a new question");
+                                            binding.appBarMain.fab.setOnClickListener(v -> {
+                                                Intent intent1=new Intent(MainActivity.this, ImageActivity.class);
+                                                intent1.putExtra("teacherAccountIsActive",1);
+                                                startActivity(intent1);
+                                            });
+                                        } else {
+//                        Toast.makeText(MainActivity.this, "This is a student account", Toast.LENGTH_SHORT).show();
+                                            binding.appBarMain.settingText.setText("Click on the button for asking a new question");
+                                            binding.appBarMain.fab.setOnClickListener(v -> {
+                                                DatabaseReference mDatabaseRef = FirebaseDatabase.getInstance().getReference("uploads for students");
+
+                                                Intent intent1=new Intent(MainActivity.this, uploadImage.class);
+                                                intent1.putExtra("setting",1);
+                                                intent1.putExtra("emailAddress",emailAddress);
+                                                startActivity(intent1);
+                                            });
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                                    }
+
+                                    @Override
+                                    public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+                                    }
+
+                                    @Override
+                                    public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
+                            }
+                            else Toast.makeText(MainActivity.this, "Please Login to Access", Toast.LENGTH_LONG).show();}
+                    }
+                });
+    }
 }

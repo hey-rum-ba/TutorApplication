@@ -47,19 +47,8 @@ public class LoginViewModel extends ViewModel {
         mAuth.signInWithEmailAndPassword(email, password).addOnSuccessListener(authResult -> {
             String data = mAuth.getCurrentUser().getDisplayName();
             loginResult.setValue(new LoginResult(new LoggedInUserView(data)));
-//        } else {
-//            loginResult.setValue(new LoginResult(R.string.login_failed));
-//        }
+
         });
-        // can be launched in a separate asynchronous job
-//        Result<LoggedInUser> result = loginRepository.login(username, password);
-//
-//        if (result instanceof Result.Success) {
-//            LoggedInUser data = ((Result.Success<LoggedInUser>) result).getData();
-//            loginResult.setValue(new LoginResult(new LoggedInUserView(data.getDisplayName())));
-//        } else {
-//            loginResult.setValue(new LoginResult(R.string.login_failed));
-//        }
     }
 
 
