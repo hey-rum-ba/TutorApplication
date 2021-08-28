@@ -95,8 +95,8 @@ public class showPreviousQuestion extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         for(DataSnapshot childSnapshot :snapshot.getChildren()){
-                            if(!childSnapshot.hasChild("imageUrl1")) {
-
+                            if(!childSnapshot.hasChild("imageUrl1") && childSnapshot.child("name1").getValue()== null) {
+                                Log.d(TAG, "data yahan pep "+ childSnapshot.child("name1").getValue().toString());
                                 String randomNodeKey = childSnapshot.getKey();
                                 dbRef.child(randomNodeKey).removeValue();
                                 break;
@@ -131,7 +131,7 @@ public class showPreviousQuestion extends AppCompatActivity {
             Upload uploadCurrent =new Upload(emailaddress,name1,image,"Not solved yet, attempted",null);
 //            Log.d(TAG, "Image URL here "+image);
             DatabaseReference dbRef= FirebaseDatabase.getInstance().getReference("uploads for students");
-            Log.d(TAG, "we here before db");
+//            Log.d(TAG, "we here before db");
 
             solving.orderByChild("imageUrl").equalTo(image).addValueEventListener(new ValueEventListener() {
                 @Override

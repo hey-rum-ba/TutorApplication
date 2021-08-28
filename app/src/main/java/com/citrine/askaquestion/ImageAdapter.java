@@ -47,7 +47,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
 
     @Override
     public void onBindViewHolder(ImageViewHolder holder, int position) {
-        Log.d(TAG, "iidhar MI he" + mI);
+//        Log.d(TAG, "iidhar MI he" + mI);
         Upload uploadCurrent = mUploads.get(position);
 
         holder.textViewName.setText(uploadCurrent.getName());
@@ -60,7 +60,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
         if(uploadCurrent.getName1()==null || uploadCurrent.getName1().equals("Not solved yet, attempted"))holder.itemView.setBackgroundColor(Color.parseColor("#FFBB86FC"));
         else holder.itemView.setBackgroundColor(Color.parseColor("#FF018786"));
         holder.itemView.setOnClickListener(v->{
-            Log.d(TAG, "iidhar Mi hi " + uploadCurrent.getName1());
+//            Log.d(TAG, "iidhar Mi hi " + uploadCurrent.getName1());
             Intent intent = null;
             if((uploadCurrent.getName1()==null || uploadCurrent.getName1().equals("Not solved yet, attempted")) && mI==0){
             intent = new Intent(mContext, completeSolution.class);

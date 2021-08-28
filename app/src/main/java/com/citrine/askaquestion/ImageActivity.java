@@ -86,6 +86,7 @@ public class ImageActivity extends AppCompatActivity {
                         mUploads.add(upload1);}
                         Collections.reverse(mUploads);
                     }
+                    if(mUploads.size()>0){
                     int numberOfElements = 1;
                     Random rand = new Random();
                     for (int i = 0; i < numberOfElements; i++) {
@@ -93,7 +94,7 @@ public class ImageActivity extends AppCompatActivity {
                         Upload upload = mUploads.get(randomIndex);
                         mUploads1.add(upload);
                         mUploads.remove(randomIndex);
-                        }
+                        }}
                     int i =getIntent().getIntExtra("teacherAccountIsActive",0);
                     mAdapter = new ImageAdapter(ImageActivity.this, mUploads1,i);
                     mRecyclerView.setAdapter(mAdapter);

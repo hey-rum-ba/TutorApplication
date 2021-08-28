@@ -85,7 +85,7 @@ public class uploadImage extends AppCompatActivity {
         setContentView(R.layout.imagepicker);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("For uploading multiple images, you have to join the images first, then choose the single merged image.");
+        builder.setMessage("For uploading multiple images, you have to join the images first, then select the single merged image do be displayed here.");
         builder.setPositiveButton("Got it", (dialog, id) -> {
             // User clicked OK button
         });
