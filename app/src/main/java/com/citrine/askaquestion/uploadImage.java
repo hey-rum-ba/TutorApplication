@@ -364,5 +364,6 @@ public class uploadImage extends AppCompatActivity {
         intent.putExtra("emailAddress",emailAddress);
         startActivity(intent);
         finish();
+
     }
 }

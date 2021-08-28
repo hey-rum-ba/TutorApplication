@@ -29,6 +29,8 @@
             android:exported="true" />
         <activity android:name=".showPreviousQuestion"
             android:exported="true" />
+        <activity android:name=".SplashActivity"
+            android:exported="true" />
         <activity android:name=".completeSolution"
             android:exported="true" />
         <activity
