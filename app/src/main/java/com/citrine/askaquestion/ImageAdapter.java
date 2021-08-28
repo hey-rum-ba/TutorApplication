@@ -105,6 +105,8 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
                 intent.putExtra("emailAddresses",uploadCurrent.getEmail());
                 intent.putExtra("image", uploadCurrent.getImageUrl());
                 intent.putExtra("Name1","Question is not solved yet");
+                int skip = ((Activity)mContext).getIntent().getIntExtra("skip",1);
+                intent.putExtra("skip",skip);
             }
             if(uploadCurrent.getName()==null) {intent.putExtra("Name","No Description");}
             else {

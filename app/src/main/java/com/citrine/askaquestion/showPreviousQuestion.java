@@ -6,6 +6,7 @@ import static android.content.ContentValues.TAG;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -124,6 +125,7 @@ public class showPreviousQuestion extends AppCompatActivity {
                 .placeholder(R.mipmap.ic_launcher)
                 .into(imageview);
         skip.setOnClickListener(v -> {
+
             DatabaseReference solving= FirebaseDatabase.getInstance().getReference("IsCurrentlySolving");
             String image = getIntent().getStringExtra("image");
             String name1 = getIntent().getStringExtra("Name");
@@ -149,11 +151,16 @@ public class showPreviousQuestion extends AppCompatActivity {
                 }
             });
            Intent intent = new Intent(showPreviousQuestion.this, ImageActivity.class);
+            int skip =getIntent().getIntExtra("skip",1);
+            skip = skip+1;
             intent.putExtra("teacherAccountIsActive",1);
             intent.putExtra("emailAddress",emailAddress);
             intent.putExtra("imageURL",imageUrl);
             intent.putExtra("imageDesc",name);
+            intent.putExtra("skip",skip);
+        new Handler().postDelayed(() -> {
             startActivity(intent);
+        }, 2500);
             finish();
         });
 

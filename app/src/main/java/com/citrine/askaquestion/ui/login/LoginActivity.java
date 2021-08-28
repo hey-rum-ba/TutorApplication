@@ -16,6 +16,7 @@ import android.os.Bundle;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -142,7 +143,13 @@ public class LoginActivity extends AppCompatActivity {
                     Log.d(TAG, "onAuthStateChanged: changing here the auth state");
                 }
             };
-            startActivity(intent);
+            new Handler().postDelayed(new Runnable(){
+                @Override
+                public void run() {
+                    /* Create an Intent that will start the Menu-Activity. */
+                    startActivity(intent);
+                }
+            }, 1500);
 
             databaseReference.orderByChild("email").equalTo(emailAddress).addChildEventListener(new ChildEventListener() {
                 @Override
