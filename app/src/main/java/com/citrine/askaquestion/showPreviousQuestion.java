@@ -140,7 +140,9 @@ public class showPreviousQuestion extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     for(DataSnapshot childSnapshot :snapshot.getChildren()){
                         String randomNodeKey = childSnapshot.getKey();
+
                         solving.child(randomNodeKey).removeValue();
+
                         dbRef.child(randomNodeKey).setValue(uploadCurrent);
                         break;
                     }
