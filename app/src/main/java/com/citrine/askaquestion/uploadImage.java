@@ -105,6 +105,8 @@ public class uploadImage extends AppCompatActivity {
 
         mStorageRef = FirebaseStorage.getInstance().getReference("uploads for student");
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("uploads for students");
+        mDatabaseRef1 = FirebaseDatabase.getInstance().getReference();
+
         if (checkPermissionREAD_EXTERNAL_STORAGE(this)) {
         mButtonChooseImage.setOnClickListener(v -> openFileChooser());}
         inte =getIntent().getIntExtra("teacherUploading",0);

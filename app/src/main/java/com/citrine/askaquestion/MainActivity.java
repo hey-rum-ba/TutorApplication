@@ -194,6 +194,7 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
                             }
                             else Toast.makeText(MainActivity.this, "Please Login to Access", Toast.LENGTH_LONG).show();}
                     }
-                });
+                }
+                );
     }
 }
