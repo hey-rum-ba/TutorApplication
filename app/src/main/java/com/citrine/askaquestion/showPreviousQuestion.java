@@ -99,6 +99,7 @@ public class showPreviousQuestion extends AppCompatActivity {
                             if(!childSnapshot.hasChild("imageUrl1") && childSnapshot.child("name1").getValue()== null) {
                                 Log.d(TAG, "data yahan pep "+ childSnapshot.child("name1").getValue().toString());
                                 String randomNodeKey = childSnapshot.getKey();
+                                intent.putExtra("randomKey",randomNodeKey);
                                 dbRef.child(randomNodeKey).removeValue();
                                 break;
                             }

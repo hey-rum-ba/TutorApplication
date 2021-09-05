@@ -364,6 +364,8 @@ public class uploadImage extends AppCompatActivity {
         inte =getIntent().getIntExtra("teacherUploading",0);
         intent.putExtra("teacherAccountIsActive",inte);
         intent.putExtra("emailAddress",emailAddress);
+        String keyValue= getIntent().getStringExtra("randomKey");
+        intent.putExtra("randomKey", keyValue);
         startActivity(intent);
         finish();
 
