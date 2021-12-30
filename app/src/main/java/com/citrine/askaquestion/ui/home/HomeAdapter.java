@@ -63,7 +63,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>
         return mUploads.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class
+    ViewHolder extends RecyclerView.ViewHolder {
             public TextView textViewName;
             public ImageView imageView;
 
